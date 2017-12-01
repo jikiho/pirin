@@ -1,0 +1,5 @@
+{
+    "/api/*": {
+        "target": "http://sep-gov.i.cz:8080"
+    }
+}

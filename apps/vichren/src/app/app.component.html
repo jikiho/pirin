@@ -1,0 +1,31 @@
+<ng-template #unavailable i18n>n/a</ng-template>
+
+<main>
+    <header>
+        <h1 i18n>The Vichren Application</h1>
+    </header>
+
+    <router-outlet></router-outlet>
+
+    <footer>
+        <details *ngIf="app.about | async as about">
+            <summary i18n>About Vichren Application</summary>
+            <dl>
+                <dt i18n>Backend version</dt>
+                <dd><ng-container *ngIf="about.backend; else unavailable">{{about.backend}}</ng-container></dd>
+                <dt i18n>Frontend version</dt>
+                <dd>{{about.frontend}}</dd>
+                <dt i18n>Angular version</dt>
+                <dd>{{about.angular.full}}</dd>
+                <dt i18n>Browser</dt>
+                <dd>{{about.navigator.userAgent}}</dd>
+                <dt i18n>Location</dt>
+                <dd>{{about.location.href}}</dd>
+                <dt i18n>Application language, locale</dt>
+                <dd>{{app.lang}}, {{app.locale}}</dd>
+                <dt i18n>Started</dt>
+                <dd>{{about.started}}</dd>
+            </dl>
+        </details>
+    </footer>
+</main>

@@ -1,25 +1,25 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./out-tsc/spec",
-    "module": "commonjs",
-    "target": "es5",
-    "types": [
-      "jasmine",
-      "node"
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "outDir": "./out-tsc/spec",
+        "module": "commonjs",
+        "target": "es5",
+        "types": [
+            "jasmine",
+            "node"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "@pirin/*": [
+                "libs/*"
+            ]
+        }
+    },
+    "include": [
+        "**/*.ts"
     ],
-    "baseUrl": ".",
-    "paths": {
-      "@pirin/*": [
-        "libs/*"
-      ]
-    }
-  },
-  "include": [
-    "**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+    "exclude": [
+        "node_modules",
+        "tmp"
+    ]
 }

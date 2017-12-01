@@ -1,0 +1,4 @@
+details summary {
+    display: inline-block;
+    cursor: pointer;
+}
