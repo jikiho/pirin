@@ -1,5 +1,5 @@
 /**
- * Provides the http request/response services.
+ * Provides the HTTP request/response services.
  */
 import {NgModule} from '@angular/core';
 import {HttpClientModule, HTTP_INTERCEPTORS, HttpInterceptor, HttpRequest, HttpResponse, HttpHandler, HttpEvent} from '@angular/common/http';
@@ -18,11 +18,14 @@ export class LocaleInterceptor implements HttpInterceptor {
     }
 
     intercept(original: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (this.app.locale) {
-            const request = original.clone({
-                headers: original.headers.set('Accept-Language', this.app.locale),
-                params: original.params.set('lang', this.app.lang)
-            });
+        const locale = original.headers.get('Accept-Language') || this.app.locale;
+
+        if (locale) {
+            const lang = locale.split('-')[0],
+                request = original.clone({
+                    headers: original.headers.set('Accept-Language', locale),
+                    params: original.params.set('lang', lang)
+                });
 
             return next.handle(request);
         }
@@ -62,7 +65,7 @@ export class TimeoutInterceptor implements HttpInterceptor {
     }
 
     intercept(original: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const timeout = original.headers.get('timeout') || this.config.requestTimeout, //sec.
+        const timeout = original.headers.get('timeout') || this.config.requestTimeout,
             request = original.clone({
                 headers: original.headers.set('Timeout', timeout.toString())
             });

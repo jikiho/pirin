@@ -1,10 +1,12 @@
+/**
+ * Base of the application environment configuration.
+ * 
+ * @example
+ *      export const environment = new EnvironmentBase({
+ *          ...
+ *      });
+ */
 export class EnvironmentBase {
-    constructor(config?: any) {
-        if (config) {
-            Object.assign(this, config);
-        }
-    }
-
     /**
      * Flag to run the application in production mode.
      */
@@ -21,12 +23,12 @@ export class EnvironmentBase {
     build: string = '${build.timestamp}';
 
     /**
-     * Request timeout (sec.)
+     * Request timeout (s).
      */
     requestTimeout: number = 1 * 60;
 
     /**
-     * Delay to resume a suspended request resource base url (msec.)
+     * Delay to resume a suspended request resource base url (ms).
      */
     resourceResumeDelay: number = 1 * 60 * 1000;
 
@@ -37,13 +39,19 @@ export class EnvironmentBase {
 
     /**
      * Request resources as a map of names and urls.
-     * There is the window location available and can be freelly used.
-     * A name represents a protocol then, e.g. "api" is used as "api:pathname".
+     * A name represents a protocol, e.g. "api" is used as "api:pathname".
+     * You can also use the window location to construct the url.
      *
      * @example
      *      api: location.origin + location.pathname.replace(/$/, '-rest')
      */
     resources: {
         [name: string]: string|string[]
+    }
+
+    constructor(config?: any) {
+        if (config) {
+            Object.assign(this, config);
+        }
     }
 }

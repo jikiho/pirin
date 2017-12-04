@@ -18,7 +18,15 @@ class About {
     angular: Angular;
     navigator: Navigator;
     location: Location;
+    locale: string;
+    lang: string;
     started: Date;
+
+    set(...args) {
+        while ([name: string, value: any] of args) {
+            this[name] = value;
+        }
+    }
 }
 
 @Injectable()
@@ -41,7 +49,9 @@ export class AppService {
     /**
      * Application language setting (defaults to "en");
      */
-    lang: string;
+    get lang(): string {
+        return this.locale.split('-')[0];
+    }
 
     /**
      * Ref. to the active component.
@@ -60,10 +70,12 @@ export class AppService {
 
         setTimeout(() => this.about.next({
             backend: undefined,
-            frontend: `${environment.version} ${environment.build}`,
+            frontend: `${this.config.version} ${this.config.build}`,
             angular: VERSION,
             navigator,
             location,
+            locale: this.locale,
+            lang: this.lang,
             started: new Date()
         }));
     }
@@ -73,7 +85,6 @@ export class AppService {
      */
     private setLocale(locale: string) {
         this.locale = locale;
-        this.lang = this.locale.split('-')[0];
 
         document.documentElement.setAttribute('lang', this.lang);
     }

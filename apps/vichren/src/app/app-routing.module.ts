@@ -4,7 +4,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {AppComponent} from './app.component';
 import {DetailComponent} from './detail.component';
 import {FilterComponent} from './filter.component';
 import {HomeComponent} from './home.component';

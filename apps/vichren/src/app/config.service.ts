@@ -2,6 +2,7 @@
  * Provides the application configuration and environment setting.
  */
 import {Injectable} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 import {environment} from '../environments/environment';
 
@@ -107,6 +108,13 @@ export class ConfigService {
     production: boolean = environment.production;
 
     /**
+     * Flag to debug the application.
+     */
+    get debug(): boolean {
+        return !this.production || this.hasQueryParam('debug');
+    }
+
+    /**
      * Frontend build version.
      */
     version: string = environment.version;
@@ -141,12 +149,7 @@ export class ConfigService {
      */
     resources = new Map<string, ConfigResource>();
 
-    /**
-     * Enhanced window location (url).
-     */
-    private url = new URL(window.location.href);
-
-    constructor() {
+    constructor(private route: ActivatedRoute) {
         this.setResources(environment.resources);
     }
 
@@ -164,9 +167,21 @@ export class ConfigService {
     }
 
     /**
-     * Checks a window location (url) parametr existance.
+     * Checks a route query parameter existance or value.
      */
-    private locationHasParam(name: string): boolean {
-        return this.url.searchParams.get(name) != null;
+    hasQueryParam(name: string, ...args): boolean {
+        const param = this.route.snapshot.queryParams[name];
+
+        if (!args.length) {
+            return param != null;
+        }
+
+        for (let value of args) {
+            if (param == value) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
