@@ -58,14 +58,14 @@ export class CacheInterceptor implements HttpInterceptor {
 
 /**
  * Provides a request timeout.
-//TODO: cancel control?
  */
+//TODO: cancel control?
 export class TimeoutInterceptor implements HttpInterceptor {
     constructor(private config: ConfigService) {
     }
 
     intercept(original: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const timeout = original.headers.get('timeout') || this.config.requestTimeout,
+        const timeout = original.headers.get('Timeout') || this.config.requestTimeout,
             request = original.clone({
                 headers: original.headers.set('Timeout', timeout.toString())
             });
@@ -82,30 +82,22 @@ export class ResourceInterceptor implements HttpInterceptor {
     }
 
     /**
-     * Calls for a request resource or a standard processing.
+     * Prepares a resource and calls for a request.
      */
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const url = new URL(request.url),
             resource = this.config.resources.get(url.protocol);
 
-        if (resource) {
-            return this.do(request, next, url.pathname, resource);
-        }
-
-        // debugger
-        console.debug(request.method || 'REQUEST', request.url, request);
-
-        return next.handle(request);
+        return this.makeRequest(request, next, url.pathname, resource);
     }
 
     /**
-     * Formates a url from available resource bases and makes the request.
-     * Retries selected failed requests with another base...
+     * Makes or retries a request based on available resource and pathname.
      */
-    private do(original: HttpRequest<any>, next: HttpHandler,
+    private makeRequest(original: HttpRequest<any>, next: HttpHandler,
             pathname: string, resource: ConfigResource, retry: number = 0): Observable<HttpEvent<any>> {
-        const base = resource.get(retry > 0),
-            request = original.clone({
+        const base = resource && resource.get(retry > 0),
+            request = !base ? original : original.clone({
                 url: new URL(pathname, base).toString()
             });
 
@@ -125,9 +117,9 @@ export class ResourceInterceptor implements HttpInterceptor {
                 // debugger
                 console.debug('FAILED', error.status, error.url || request.url, error);
 
-                if (resource.suspendable(error.status || 0)) {
+                if (resource && resource.suspendable(error.status || 0)) {
                     if (resource.suspend(base)) {
-                        return this.do(original, next, pathname, resource, retry += 1);
+                        return this.makeRequest(original, next, pathname, resource, retry += 1);
                     }
                 }
 

@@ -59,8 +59,6 @@ export class AppService {
 
         this.started = new Date();
 
-        this.about.subscribe(about => console.debug("APPLICATION", about));
-
         setTimeout(() => this.about.next({
             backend: undefined,
             frontend: `${this.config.version} ${this.config.build}`,
