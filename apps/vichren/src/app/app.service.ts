@@ -6,8 +6,6 @@ import {Subject} from 'rxjs/Rx';
 
 import {environment} from '../environments/environment';
 import {ConfigService} from './config.service';
-import {DatasetModel} from './dataset.model';
-import {DimensionModel} from './dimension.model';
 
 /**
  * Collection of information about the application (e.g. various versions).
@@ -19,7 +17,6 @@ class About {
     navigator: Navigator;
     location: Location;
     locale: string;
-    lang: string;
     started: Date;
 }
 
@@ -90,6 +87,6 @@ export class AppService {
 
         this.locale = locale;
 
-        document.documentElement.setAttribute('lang', this.lang);
+        document.documentElement.setAttribute('lang', lang);
     }
 }
