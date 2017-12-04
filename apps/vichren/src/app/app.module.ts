@@ -9,12 +9,13 @@ import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AppService} from './app.service';
 import {ConfigService} from './config.service';
-import {DetailComponent} from './detail.component';
+import {DatasetsChildrenComponent} from './datasets/children.component';
+import {DatasetsDetailComponent} from './datasets/detail.component';
+import {DatasetsListComponent} from './datasets/list.component';
 import {DialogDirective} from './dialog.directive';
-import {FilterComponent} from './filter.component';
+import {DimensionsFilterComponent} from './dimensions/filter.component';
 import {HomeComponent} from './home.component';
 import {HttpModule} from './http.module';
-import {ListComponent} from './list.component';
 
 @NgModule({
     imports: [
@@ -25,11 +26,12 @@ import {ListComponent} from './list.component';
     ],
     declarations: [
         AppComponent,
-        DetailComponent,
+        DatasetsChildrenComponent,
+        DatasetsDetailComponent,
+        DatasetsListComponent,
         DialogDirective,
-        FilterComponent,
-        HomeComponent,
-        ListComponent
+        DimensionsFilterComponent,
+        HomeComponent
     ],
     providers: [
         AppService,

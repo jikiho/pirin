@@ -5,12 +5,12 @@ import {Subject} from 'rxjs/Rx';
 import {DimensionModel} from './dimension.model';
 
 @Component({
-    selector: 'filter-component',
+    selector: 'dimensions-filter-component',
     templateUrl: './filter.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FilterComponent implements OnInit {
-    values = new Subject<DimensionModel[]>();
+export class DimensionsFilterComponent implements OnInit {
+    items$: Subject<DimensionModel[]> = new Subject();
 
     constructor(private http: HttpClient) {
     }
@@ -20,8 +20,8 @@ export class FilterComponent implements OnInit {
     }
 
     load() {
-        this.http.get('api:dimensions').subscribe(response => {
-            this.values.next(<Array<DimensionModel>>response['values']);
+        this.http.get('api:dimensions/full').subscribe(response => {
+            this.items$.next(<DimensionModel[]>response['values']);
         });
     }
 }

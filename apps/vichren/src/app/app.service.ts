@@ -21,12 +21,6 @@ class About {
     locale: string;
     lang: string;
     started: Date;
-
-    set(...args) {
-        while ([name: string, value: any] of args) {
-            this[name] = value;
-        }
-    }
 }
 
 @Injectable()

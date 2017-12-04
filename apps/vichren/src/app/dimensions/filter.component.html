@@ -1,0 +1,66 @@
+<ng-template #unavailable i18n>n/a</ng-template>
+
+<h2>Dataset filter</h2>
+
+<ng-container *ngIf="items$ | async as items; else unavailable">
+    <dl>
+        <ng-container *ngFor="let item of items">
+            <dt>{{item.name}}</dt>
+
+            <ng-container *ngIf="item.mode + item.structure === 'SINGLEFLAT'">
+                <dd>
+                    <label>
+                        <input type="radio" [name]="item.code" [value]="" checked>
+                        <ng-container i18n>none</ng-container>
+                    </label>
+                </dd>
+                <dd *ngFor="let value of item.values">
+                    <label>
+                        <input type="radio" [name]="item.code" [value]="value.code">
+                        <abbr [title]="value.name">{{value.code}}</abbr>
+                        <dfn>{{value.name}}</dfn>
+                    </label>
+                </dd>
+            </ng-container>
+
+            <ng-container *ngIf="item.mode + item.structure === 'MULTIFLAT'">
+                <dd>
+                    <label>
+                        <input type="checkbox" [name]="item.code" [value]="" [checked]="undefined" disabled>
+                        <ng-container i18n>all/none</ng-container>
+                    </label>
+                </dd>
+                <dd *ngFor="let value of item.values">
+                    <label>
+                        <input type="checkbox" [name]="item.code" [value]="value.code">
+                        <abbr [title]="value.name">{{value.code}}</abbr>
+                        <dfn>{{value.name}}</dfn>
+                    </label>
+                </dd>
+            </ng-container>
+
+            <ng-container *ngIf="item.mode + item.structure === 'SINGLETREE'">
+                <dd>
+                    <label>
+                        <input type="radio" [name]="item.code" [value]="" checked>
+                        <ng-container i18n>none</ng-container>
+                    </label>
+                </dd>
+                <ng-container *ngTemplateOutlet="singleTree; context: {$implicit: item.values}"></ng-container>
+            </ng-container>
+
+            <ng-template #singleTree let-values>
+                <dd *ngFor="let value of values">
+                    <label>
+                        <input type="radio" [name]="item.code" [value]="value.code">
+                        <abbr [title]="value.name">{{value.code}}</abbr>
+                        <dfn>{{value.name}}</dfn>
+                    </label>
+                    <ng-container *ngTemplateOutlet="singleTree; context: {$implicit: value.children}"></ng-container>
+                </dd>
+            </ng-template>
+        </ng-container>
+    </dl>
+</ng-container>
+
+<p><a routerLink="/datasets" i18n-title title="Dataset list" i18n>Apply filter</a></p>

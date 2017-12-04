@@ -1,0 +1,39 @@
+<ng-template #unavailable i18n>n/a</ng-template>
+
+<h2>Dataset detail</h2>
+
+<ng-container *ngIf="item$ | async as item; else unavailable">
+    <dl>
+        <dt i18n>ID</dt>
+        <dd>{{item.id}}</dd>
+        <dt i18n>Name</dt>
+        <dd>{{item.name}}</dd>
+    </dl>
+
+    <h3>Metadata</h3>
+    <ng-container *ngIf="item.metadata.length; else unavailable">
+        <dl>
+            <ng-container *ngFor="let data of item.metadata">
+                <dt>{{data.dimension.name}}</dt>
+                <dd>{{data.value}}</dd>
+            </ng-container>
+        </dl>
+    </ng-container>
+
+    <h3>Values</h3>
+    <ng-container *ngIf="item.values.length; else unavailable">
+        <dl>
+            <ng-container *ngFor="let data of item.values">
+                <dt>{{data.dimension.name}}</dt>
+                <dd>{{data.value.name}}</dd>
+            </ng-container>
+        </dl>
+    </ng-container>
+
+    <h3>Children</h3>
+    <ng-container *ngIf="item.children.length; else unavailable">
+        <datasets-children-component [items]="item.children"></datasets-children-component>
+    </ng-container>
+</ng-container>
+
+<p><a routerLink="/datasets" i18n-title title="Dataset list" i18n>Close detail</a></p>

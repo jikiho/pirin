@@ -5,23 +5,24 @@ import {Subject} from 'rxjs/Rx';
 import {DatasetModel} from './dataset.model';
 
 @Component({
-    selector: 'list-component',
+    selector: 'datasets-list-component',
     templateUrl: './list.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListComponent implements OnInit {
-    values = new Subject<DatasetModel[]>();
+export class DatasetsListComponent implements OnInit {
+    items$: Subject<DatasetModel[]> = new Subject();
 
     constructor(private http: HttpClient) {
     }
 
     ngOnInit() {
+        this.items$.next(null);
         this.load();
     }
 
     load() {
-        this.http.get('api:datasets').subscribe(response => {
-            this.values.next(<Array<DatasetModel>>response['values']);
+        this.http.get('api:facts').subscribe(response => {
+            this.items$.next(<DatasetModel[]>response['values']);
         });
     }
 }

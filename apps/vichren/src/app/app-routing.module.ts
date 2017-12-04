@@ -4,10 +4,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
-import {DetailComponent} from './detail.component';
-import {FilterComponent} from './filter.component';
+import {DatasetsDetailComponent} from './datasets/detail.component';
+import {DatasetsListComponent} from './datasets/list.component';
+import {DimensionsFilterComponent} from './dimensions/filter.component';
 import {HomeComponent} from './home.component';
-import {ListComponent} from './list.component';
 
 /**
  * Configuration of the application routing.
@@ -15,15 +15,15 @@ import {ListComponent} from './list.component';
 const routes: Routes = [
     {
         path: 'datasets/filter',
-        component: FilterComponent
+        component: DimensionsFilterComponent
     },
     {
         path: 'datasets/:id',
-        component: DetailComponent
+        component: DatasetsDetailComponent
     },
     {
         path: 'datasets',
-        component: ListComponent
+        component: DatasetsListComponent
     },
     {
         path: '**',

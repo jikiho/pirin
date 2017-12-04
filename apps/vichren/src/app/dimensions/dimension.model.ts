@@ -3,16 +3,10 @@
  */
 export class DimensionModel {
     id: string;
-
-    code: string;
-
     name: string;
-
     structure: string;
-
     mode: string;
-
+    metadata?: any;
     values?: any;
-
     children?: any;
 }

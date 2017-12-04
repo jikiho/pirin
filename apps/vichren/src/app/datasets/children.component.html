@@ -1,0 +1,27 @@
+<table>
+    <thead>
+        <tr>
+            <th i18n>ID</th>
+            <th i18n>Name</th>
+            <th i18n>Metadata and values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of items">
+            <td><a routerLink="/datasets/{{item.id}}" i18n-title title="Dataset detail">{{item.id}}</a></td>
+            <td>{{item.name}}</td>
+            <td class="inline">
+                <dl>
+                    <ng-container *ngFor="let data of item.metadata">
+                        <dt>{{data.dimension.name}}</dt>
+                        <dd>{{data.value}}</dd>
+                    </ng-container>
+                    <ng-container *ngFor="let data of item.values">
+                        <dt>{{data.dimension.name}}</dt>
+                        <dd>{{data.value.name}}</dd>
+                    </ng-container>
+                </dl>
+            </td>
+        </tr>
+    </tbody>
+</table>
