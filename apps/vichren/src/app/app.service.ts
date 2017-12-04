@@ -41,11 +41,9 @@ export class AppService {
     locale: string;
 
     /**
-     * Application language setting (defaults to "en");
+     * Application start timestamp.
      */
-    get lang(): string {
-        return this.locale.split('-')[0];
-    }
+    started: Date;
 
     /**
      * Ref. to the active component.
@@ -53,7 +51,7 @@ export class AppService {
     active: any;
 
     /**
-     * Initializes the application setting.
+     * Initializes the application.
      */
     constructor(@Inject(LOCALE_ID) locale: string,
             private config: ConfigService) {
@@ -62,6 +60,10 @@ export class AppService {
 
         this.setLocale(locale);
 
+        this.started = new Date();
+
+        this.about.subscribe(about => console.debug("APPLICATION", about));
+
         setTimeout(() => this.about.next({
             backend: undefined,
             frontend: `${this.config.version} ${this.config.build}`,
@@ -69,15 +71,23 @@ export class AppService {
             navigator,
             location,
             locale: this.locale,
-            lang: this.lang,
-            started: new Date()
+            started: this.started
         }));
+    }
+
+    /**
+     * Converts a locale to the corresponding language.
+     */
+    getLocaleLang(locale: string): string {
+        return locale.split('-')[0];
     }
 
     /**
      * Sets the application locale string and updates corresponding values.
      */
     private setLocale(locale: string) {
+        const lang = this.getLocaleLang(locale);
+
         this.locale = locale;
 
         document.documentElement.setAttribute('lang', this.lang);

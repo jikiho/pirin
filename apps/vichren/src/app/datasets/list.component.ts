@@ -16,11 +16,12 @@ export class DatasetsListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.items$.next(null);
         this.load();
     }
 
     load() {
+        this.items$.next(null);
+
         this.http.get('api:facts').subscribe(response => {
             this.items$.next(<DatasetModel[]>response['values']);
         });

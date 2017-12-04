@@ -21,7 +21,7 @@ export class LocaleInterceptor implements HttpInterceptor {
         const locale = original.headers.get('Accept-Language') || this.app.locale;
 
         if (locale) {
-            const lang = locale.split('-')[0],
+            const lang = this.app.getLocaleLang(locale),
                 request = original.clone({
                     headers: original.headers.set('Accept-Language', locale),
                     params: original.params.set('lang', lang)

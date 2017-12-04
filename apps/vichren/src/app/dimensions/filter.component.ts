@@ -20,6 +20,8 @@ export class DimensionsFilterComponent implements OnInit {
     }
 
     load() {
+        this.items$.next(null);
+
         this.http.get('api:dimensions/full').subscribe(response => {
             this.items$.next(<DimensionModel[]>response['values']);
         });
