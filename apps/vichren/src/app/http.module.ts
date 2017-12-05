@@ -2,7 +2,7 @@
  * Provides the HTTP request/response services.
  */
 import {NgModule} from '@angular/core';
-import {HttpClientModule, HTTP_INTERCEPTORS, HttpInterceptor, HttpRequest, HttpResponse, HttpHandler, HttpEvent} from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS, HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse, HttpHandler, HttpEvent} from '@angular/common/http';
 import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
@@ -35,12 +35,11 @@ export class LocaleInterceptor implements HttpInterceptor {
 }
 
 /**
- * Provides a request/response cache.
+ * Provides a cache control and management.
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
  */
 export class CacheInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-/*
         const control = request.headers.get('Cache-Control');
         
         if (!/\bno-cache\b/.test(control)) {
@@ -50,25 +49,6 @@ export class CacheInterceptor implements HttpInterceptor {
         if (!/\bno-store\b/.test(control)) {
             //TODO: set cache result
         }
-*/
-
-        return next.handle(request);
-    }
-}
-
-/**
- * Provides a request timeout.
- */
-//TODO: cancel control?
-export class TimeoutInterceptor implements HttpInterceptor {
-    constructor(private config: ConfigService) {
-    }
-
-    intercept(original: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const timeout = original.headers.get('Timeout') || this.config.requestTimeout,
-            request = original.clone({
-                headers: original.headers.set('Timeout', timeout.toString())
-            });
 
         return next.handle(request);
     }
@@ -123,6 +103,39 @@ export class ResourceInterceptor implements HttpInterceptor {
                     }
                 }
 
+                //return Observable.empty();
+                return Observable.throw(error);
+            });
+    }
+}
+
+/**
+ * Provides a request timeout.
+ * Using the "Keep-Alive" header to read a request one-time value.
+ */
+export class TimeoutInterceptor implements HttpInterceptor {
+    constructor(private config: ConfigService) {
+    }
+
+    intercept(original: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        const value = original.headers.get('Keep-Alive') || '',
+            values = value && value.match(/\btimeout=([0-9]+)\b/) || undefined,
+            sec = value && parseInt(values[1]) || this.config.requestTimeout,
+            msec = sec * 1000, //milliseconds
+            request = original.clone({
+                headers: original.headers.delete('Keep-Alive')
+            });
+
+        return next.handle(request).timeout(msec)
+            .catch((error, caught) => {
+                if (error.name === 'TimeoutError') {
+                    error = new HttpErrorResponse({
+                        status: -1, //runtime-like error
+                        statusText: 'Timeout Exceeded',
+                        url: request.url
+                    });
+                }
+
                 return Observable.throw(error);
             });
     }
@@ -136,22 +149,27 @@ export class ResourceInterceptor implements HttpInterceptor {
         {
             provide: HTTP_INTERCEPTORS,
             useClass: LocaleInterceptor,
-            multi: true
+            multi: true,
+            deps: [AppService]
         },
+        /*
         {
             provide: HTTP_INTERCEPTORS,
             useClass: CacheInterceptor,
             multi: true
         },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: TimeoutInterceptor,
-            multi: true
-        },
+        */
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ResourceInterceptor,
-            multi: true
+            multi: true,
+            deps: [ConfigService]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TimeoutInterceptor,
+            multi: true,
+            deps: [ConfigService]
         }
     ]
 })

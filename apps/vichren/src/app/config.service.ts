@@ -125,12 +125,12 @@ export class ConfigService {
     build: string = environment.build;
 
     /**
-     * Request timeout (sec.)
+     * Request timeout (s).
      */
     requestTimeout: number = environment.requestTimeout;
 
     /**
-     * Delay to resume a suspended request resource base url (msec.)
+     * Delay to resume a suspended request resource base url (ms).
      */
     resourceResumeDelay: number = environment.resourceResumeDelay;
 
