@@ -76,35 +76,30 @@ export class ResourceInterceptor implements HttpInterceptor {
      */
     private makeRequest(original: HttpRequest<any>, next: HttpHandler,
             pathname: string, resource: ConfigResource, retry: number = 0): Observable<HttpEvent<any>> {
-        const base = resource && resource.get(retry > 0),
+        const base = resource && resource.get(retry > 0), //active resource base url
             request = !base ? original : original.clone({
                 url: new URL(pathname, base).toString()
             });
 
-        // debugger
         console.debug(retry ? 'RETRY' : '', request.method || 'REQUEST', request.url, request);
 
         return next.handle(request)
             .do(response => {
                 if (response instanceof HttpResponse) {
-                    // debugger
                     console.debug('RESPONSE', response.status, response.url || request.url, response);
                 }
 
                 return response;
             })
             .catch((error, caught) => {
-                // debugger
                 console.debug('FAILED', error.status, error.url || request.url, error);
 
-                if (resource && resource.suspendable(error.status || 0)) {
-                    if (resource.suspend(base)) {
-                        return this.makeRequest(original, next, pathname, resource, retry += 1);
-                    }
+                if (resource && resource.retry(error, base)) {
+                    return this.makeRequest(original, next, pathname, resource, retry += 1);
                 }
 
-                //return Observable.empty();
                 return Observable.throw(error);
+                //return Observable.empty();
             });
     }
 }

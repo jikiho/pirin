@@ -2,6 +2,7 @@
  * Provides the application configuration and environment setting.
  */
 import {Injectable} from '@angular/core';
+import {HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 
 import {environment} from '../environments/environment';
@@ -59,20 +60,28 @@ export class ConfigResource {
     }
 
     /**
-     * Checks a response status.
+     * Handles a failed request and returns if it's suitable to retry.
+     * If suspendable, the failed request base url is suspended.
      */
-    suspendable(status: number): boolean {
-        return this.config.resourceSuspendable.has(status);
+    retry(error: HttpErrorResponse, base: string): boolean {
+        const suspendable = this.config.resourceSuspendables.has(error.status);
+
+        if (suspendable) {
+            if (this.suspend(base)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Suspends a base url and initializes the resume timer.
      */
-    suspend(base: string, delay: number = this.config.resourceResumeDelay): boolean {
+    private suspend(base: string, delay: number = this.config.resourceResumeDelay): boolean {
         if (this.bases.length > 1 && !this.suspends.has(base)) {
             const timer: number = window.setTimeout(() => this.resume(base), delay);
 
-            // debugger
             console.debug('SUSPEND', base);
 
             this.suspends.set(base, timer);
@@ -86,11 +95,10 @@ export class ConfigResource {
     /**
      * Resumes a base url.
      */
-    resume(base: string) {
+    private resume(base: string) {
         const timer: number = this.suspends.get(base);
 
         if (timer) {
-            // debugger
             console.debug('RESUME', base);
 
             this.suspends.delete(base);
@@ -140,9 +148,9 @@ export class ConfigService {
     resourceGetNext: boolean = environment.resourceGetNext;
 
     /**
-     * List of error status codes...
+     * List of failed request statuses suitable to suspend and retry.
      */
-    resourceSuspendable: Set<number> = new Set([0, 502, 503]);
+    resourceSuspendables: Set<number> = new Set([0, 502, 503]);
 
     /**
      * Request resources.
