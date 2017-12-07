@@ -1,8 +1,10 @@
-<ng-template #unavailable i18n>n/a</ng-template>
+<ng-template #unavailable i18n><p>n/a</p></ng-template>
 
 <h2>Dataset filter</h2>
 
-<ng-container *ngIf="items$ | async as items; else unavailable">
+<p><a routerLink="/datasets" i18n-title title="Show dataset list" i18n>Close filter</a></p>
+
+<form #form="ngForm" *ngIf="items$ | async as items; else unavailable">
     <dl>
         <ng-container *ngFor="let item of items">
             <dt>{{item.name}}</dt>
@@ -61,6 +63,4 @@
             </ng-template>
         </ng-container>
     </dl>
-</ng-container>
-
-<p><a routerLink="/datasets" i18n-title title="Dataset list" i18n>Apply filter</a></p>
+</form>

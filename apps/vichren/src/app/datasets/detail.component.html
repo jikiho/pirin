@@ -1,6 +1,8 @@
-<ng-template #unavailable i18n>n/a</ng-template>
+<ng-template #unavailable i18n><p>n/a</p></ng-template>
 
 <h2>Dataset detail</h2>
+
+<p><a routerLink="/datasets" i18n-title title="Show dataset list" i18n>Close detail</a></p>
 
 <ng-container *ngIf="item$ | async as item; else unavailable">
     <dl>
@@ -35,5 +37,3 @@
         <datasets-children-component [items]="item.children"></datasets-children-component>
     </ng-container>
 </ng-container>
-
-<p><a routerLink="/datasets" i18n-title title="Dataset list" i18n>Close detail</a></p>
