@@ -9,7 +9,7 @@
         <ng-container *ngFor="let item of items">
             <dt>{{item.name}}</dt>
 
-            <ng-container *ngIf="item.mode + item.structure === 'SINGLEFLAT'">
+            <ng-container *ngIf="item.mode === 'SINGLE' && item.structure === 'FLAT'">
                 <dd>
                     <label>
                         <input type="radio" [name]="item.code" [value]="" checked>
@@ -25,7 +25,7 @@
                 </dd>
             </ng-container>
 
-            <ng-container *ngIf="item.mode + item.structure === 'MULTIFLAT'">
+            <ng-container *ngIf="item.mode === 'MULTI' && item.structure === 'FLAT'">
                 <dd>
                     <label>
                         <input type="checkbox" [name]="item.code" [value]="" [checked]="undefined" disabled>
@@ -41,7 +41,7 @@
                 </dd>
             </ng-container>
 
-            <ng-container *ngIf="item.mode + item.structure === 'SINGLETREE'">
+            <ng-container *ngIf="item.mode === 'SINGLE' && item.structure === 'TREE'">
                 <dd>
                     <label>
                         <input type="radio" [name]="item.code" [value]="" checked>
