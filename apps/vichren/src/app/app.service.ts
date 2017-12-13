@@ -30,7 +30,7 @@ export class AppService {
     /**
      * About the application.
      */
-    about = new Subject<About>();
+    about$ = new Subject<About>();
 
     /**
      * Application locale setting (defaults to "en-US");
@@ -59,7 +59,7 @@ export class AppService {
 
         this.started = new Date();
 
-        setTimeout(() => this.about.next({
+        setTimeout(() => this.about$.next({
             backend: undefined,
             frontend: `${this.config.version} ${this.config.build}`,
             angular: VERSION,

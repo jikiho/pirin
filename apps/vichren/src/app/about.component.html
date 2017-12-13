@@ -1,6 +1,6 @@
 <ng-template #unavailable i18n>n/a</ng-template>
 
-<details *ngIf="app.about | async as about">
+<details *ngIf="app.about$ | async as about">
     <summary i18n>About Vichren Application</summary>
     <dl>
         <dt i18n>Backend version</dt>
