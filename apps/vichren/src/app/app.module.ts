@@ -10,14 +10,18 @@ import {AboutComponent} from './about.component';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AppService} from './app.service';
+import {BoolericPipe} from './booleric.pipe';
 import {ConfigService} from './config.service';
 import {DatasetsChildrenComponent} from './datasets/children.component';
 import {DatasetsDetailComponent} from './datasets/detail.component';
 import {DatasetsListComponent} from './datasets/list.component';
+import {DatericPipe} from './dateric.pipe';
 import {DialogDirective} from './dialog.directive';
 import {DimensionsFilterComponent} from './dimensions/filter.component';
 import {HomeComponent} from './home.component';
 import {HttpModule} from './http.module';
+import {NumericPipe} from './numeric.pipe';
+import {TimestampPipe} from './timestamp.pipe';
 
 @NgModule({
     imports: [
@@ -30,12 +34,16 @@ import {HttpModule} from './http.module';
     declarations: [
         AboutComponent,
         AppComponent,
+        BoolericPipe,
         DatasetsChildrenComponent,
         DatasetsDetailComponent,
         DatasetsListComponent,
+        DatericPipe,
         DialogDirective,
         DimensionsFilterComponent,
-        HomeComponent
+        HomeComponent,
+        NumericPipe,
+        TimestampPipe
     ],
     providers: [
         AppService,

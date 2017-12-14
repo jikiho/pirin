@@ -33,11 +33,6 @@ export class AppService {
     about$ = new Subject<About>();
 
     /**
-     * Application locale setting (defaults to "en-US");
-     */
-    locale: string;
-
-    /**
      * Application start timestamp.
      */
     started: Date;
@@ -48,14 +43,19 @@ export class AppService {
     active: any;
 
     /**
+     * Application locale setting (defaults to "en-US");
+     */
+    //public readonly locale: string;
+
+    /**
      * Initializes the application.
      */
-    constructor(@Inject(LOCALE_ID) locale: string,
+    constructor(@Inject(LOCALE_ID) public readonly locale: string,
             private config: ConfigService) {
         // global ref.
         Object.assign(window, {app: this});
 
-        this.setLocale(locale);
+        this.useLocale(locale);
 
         this.started = new Date();
 
@@ -78,12 +78,10 @@ export class AppService {
     }
 
     /**
-     * Sets the application locale string and updates corresponding values.
+     * Updates corresponding locale values (e.g. document language).
      */
-    private setLocale(locale: string) {
+    private useLocale(locale: string) {
         const lang = this.getLocaleLang(locale);
-
-        this.locale = locale;
 
         document.documentElement.setAttribute('lang', lang);
     }
