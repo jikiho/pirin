@@ -27,8 +27,9 @@
         "@ngrx/router-store": "^4.1.0",
         "@ngrx/store": "^4.1.0",
         "@ngrx/store-devtools": "4.1.1",
-        "@nrwl/nx": "0.5.1",
+        "@nrwl/nx": "0.5.4",
         "core-js": "^2.5.3",
+        "font-awesome": "^4.7.0",
         "normalize.css": "^7.0.0",
         "rxjs": "^5.5.5",
         "zone.js": "^0.8.18"
@@ -37,7 +38,7 @@
         "@angular/cli": "nrwl/fix-cli-build#release16",
         "@angular/compiler-cli": "5.1.1",
         "@angular/language-service": "5.1.1",
-        "@nrwl/schematics": "0.5.1",
+        "@nrwl/schematics": "0.5.4",
         "@types/jasmine": "~2.8.2",
         "@types/jasminewd2": "~2.0.2",
         "@types/node": "~8.5.1",
@@ -52,7 +53,7 @@
         "karma-jasmine-html-reporter": "^0.2.2",
         "prettier": "1.9.2",
         "protractor": "~5.2.2",
-        "ts-node": "~4.0.1",
+        "ts-node": "~4.0.2",
         "tslint": "~5.8.0",
         "typescript": "2.6.2"
     }
