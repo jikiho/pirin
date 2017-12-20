@@ -1,8 +1,6 @@
 <ng-template #unavailable i18n><p>n/a</p></ng-template>
 
-<h2 i18n>Dataset list</h2>
-
-<p><a routerLink="/datasets/filter" i18n-title title="Show dataset filter" i18n>Dataset filter</a></p>
+<h2 i18n>Datasets</h2>
 
 <ng-container *ngIf="items$ | async as items; else unavailable">
     <datasets-children-component [items]="items"></datasets-children-component>

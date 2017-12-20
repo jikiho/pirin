@@ -1,8 +1,8 @@
 /**
- * Provides the application sources and services.
+ * Provides the main application sources and services.
  */
 import {Version as Angular, VERSION, Injectable, Inject, LOCALE_ID, Component} from '@angular/core';
-import {Subject} from 'rxjs/Rx';
+import {BehaviorSubject} from 'rxjs/Rx';
 
 import {environment} from '../environments/environment';
 import {ConfigService} from './config.service';
@@ -28,14 +28,9 @@ export class AppService {
     readonly environment = environment;
 
     /**
-     * About the application.
-     */
-    about$ = new Subject<About>();
-
-    /**
      * Application start timestamp.
      */
-    started: Date;
+    started = new Date();
 
     /**
      * Ref. to the active component.
@@ -43,7 +38,20 @@ export class AppService {
     active: any;
 
     /**
-     * Application locale setting (defaults to "en-US");
+     * About the application (stream).
+     */
+    about$ = new BehaviorSubject<About>({
+        backend: undefined,
+        frontend: `${this.config.version} ${this.config.build}`,
+        angular: VERSION,
+        navigator,
+        location,
+        locale: this.locale,
+        started: this.started
+    });
+
+    /**
+     * Application locale setting (defaults to "en-US").
      */
     //public readonly locale: string;
 
@@ -52,22 +60,12 @@ export class AppService {
      */
     constructor(@Inject(LOCALE_ID) public readonly locale: string,
             private config: ConfigService) {
+        const lang = this.getLocaleLang(locale);
+
+        document.documentElement.setAttribute('lang', lang);
+
         // global ref.
         Object.assign(window, {app: this});
-
-        this.useLocale(locale);
-
-        this.started = new Date();
-
-        setTimeout(() => this.about$.next({
-            backend: undefined,
-            frontend: `${this.config.version} ${this.config.build}`,
-            angular: VERSION,
-            navigator,
-            location,
-            locale: this.locale,
-            started: this.started
-        }));
     }
 
     /**
@@ -75,14 +73,5 @@ export class AppService {
      */
     getLocaleLang(locale: string): string {
         return locale.split('-')[0];
-    }
-
-    /**
-     * Updates corresponding locale values (e.g. document language).
-     */
-    private useLocale(locale: string) {
-        const lang = this.getLocaleLang(locale);
-
-        document.documentElement.setAttribute('lang', lang);
     }
 }

@@ -1,8 +1,6 @@
 <ng-template #unavailable i18n><p>n/a</p></ng-template>
 
-<h2>Dataset detail</h2>
-
-<p><a routerLink="/datasets" i18n-title title="Show dataset list" i18n>Close detail</a></p>
+<h2>Dataset</h2>
 
 <ng-container *ngIf="item$ | async as item; else unavailable">
     <dl>
@@ -27,7 +25,13 @@
         <dl>
             <ng-container *ngFor="let data of item.values">
                 <dt>{{data.dimension.name}}</dt>
-                <dd>{{data.value.name}}</dd>
+                <ng-template #value>
+                    <dd>{{data.value}}</dd>
+                </ng-template>
+                <ng-container *ngIf="data.value.code && data.value.name; else value">
+                    <dd><abbr [title]="data.value.name">{{data.value.code}}</abbr>
+                            <dfn>{{data.value.name}}</dfn></dd>
+                </ng-container>
             </ng-container>
         </dl>
     </ng-container>

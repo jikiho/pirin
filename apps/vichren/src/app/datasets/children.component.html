@@ -18,7 +18,13 @@
                     </ng-container>
                     <ng-container *ngFor="let data of item.values">
                         <dt>{{data.dimension.name}}</dt>
-                        <dd>{{data.value.name}}</dd>
+                        <ng-template #value>
+                            <dd>{{data.value}}</dd>
+                        </ng-template>
+                        <ng-container *ngIf="data.value.code && data.value.name; else value">
+                            <dd><abbr [title]="data.value.name">{{data.value.code}}</abbr>
+                                    <dfn>{{data.value.name}}</dfn></dd>
+                        </ng-container>
                     </ng-container>
                 </dl>
             </td>

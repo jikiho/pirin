@@ -27,8 +27,7 @@ export class DatasetsDetailComponent implements OnInit {
     load(id: string) {
         this.item$.next(null);
 
-        this.http.get(`api:facts/${id}`).subscribe(response => {
-            this.item$.next(<DatasetModel>response);
-        });
+        this.http.get(`api:facts/${id}`)
+            .subscribe(response => this.item$.next(<DatasetModel>response));
     }
 }

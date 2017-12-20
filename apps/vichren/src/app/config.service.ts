@@ -128,7 +128,7 @@ export class ConfigService {
     version: string = environment.version;
 
     /**
-     * Frontend build timestamp.
+     * Frontend build identification (timestamp).
      */
     build: string = environment.build;
 

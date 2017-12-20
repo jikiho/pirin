@@ -1,0 +1,8 @@
+<ng-template #unavailable i18n><p>n/a</p></ng-template>
+
+<h2 i18n>Browser</h2>
+
+<ng-container *ngIf="items$ | async as items; else unavailable">
+    <browser-list-component [items]="items" [offset]="offset" [hidden]="detail"></browser-list-component>
+    <browser-detail-component *ngIf="index > -1" [item]="items[index]" [current]="current" [previous]="previous" [next]="next" [hidden]="!detail"></browser-detail-component>
+</ng-container>

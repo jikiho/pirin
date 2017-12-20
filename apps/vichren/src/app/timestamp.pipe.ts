@@ -17,7 +17,6 @@ const ALIASES = {
 })
 export class TimestampPipe extends DatePipe {
     transform(value: string, pattern: string = 'long'): string {
-
         return super.transform(value, ALIASES[pattern] || pattern);
     }
 }

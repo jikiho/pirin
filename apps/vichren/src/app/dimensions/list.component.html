@@ -1,8 +1,6 @@
 <ng-template #unavailable i18n><p>n/a</p></ng-template>
 
-<h2>Dataset filter</h2>
-
-<p><a routerLink="/datasets" i18n-title title="Show dataset list" i18n>Close filter</a></p>
+<h2>Dimensions</h2>
 
 <form #form="ngForm" *ngIf="items$ | async as items; else unavailable">
     <dl>
@@ -48,19 +46,42 @@
                         <ng-container i18n>none</ng-container>
                     </label>
                 </dd>
+
                 <ng-container *ngTemplateOutlet="singleTree; context: {$implicit: item.values}"></ng-container>
+
+                <ng-template #singleTree let-values>
+                    <dd *ngFor="let value of values">
+                        <label>
+                            <input type="radio" [name]="item.code" [value]="value.code">
+                            <abbr [title]="value.name">{{value.code}}</abbr>
+                            <dfn>{{value.name}}</dfn>
+                        </label>
+                        <ng-container *ngTemplateOutlet="singleTree; context: {$implicit: value.children}"></ng-container>
+                    </dd>
+                </ng-template>
             </ng-container>
 
-            <ng-template #singleTree let-values>
-                <dd *ngFor="let value of values">
+            <ng-container *ngIf="item.mode === 'MULTI' && item.structure === 'TREE'">
+                <dd>
                     <label>
-                        <input type="radio" [name]="item.code" [value]="value.code">
-                        <abbr [title]="value.name">{{value.code}}</abbr>
-                        <dfn>{{value.name}}</dfn>
+                        <input type="checkbox" [name]="item.code" [value]="" [checked]="undefined" disabled>
+                        <ng-container i18n>all/none</ng-container>
                     </label>
-                    <ng-container *ngTemplateOutlet="singleTree; context: {$implicit: value.children}"></ng-container>
                 </dd>
-            </ng-template>
+
+                <ng-container *ngTemplateOutlet="multiTree; context: {$implicit: item.values}"></ng-container>
+
+                <ng-template #multiTree let-values>
+                    <dd *ngFor="let value of values">
+                        <label>
+                            <input type="checkbox" [name]="item.code" [value]="value.code" [disabled]="value.children.length">
+                            <abbr [title]="value.name">{{value.code}}</abbr>
+                            <dfn>{{value.name}}</dfn>
+                        </label>
+                        <ng-container *ngTemplateOutlet="multiTree; context: {$implicit: value.children}"></ng-container>
+                    </dd>
+                </ng-template>
+            </ng-container>
         </ng-container>
     </dl>
 </form>

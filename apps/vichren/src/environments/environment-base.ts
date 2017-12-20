@@ -18,7 +18,7 @@ export class EnvironmentBase {
     version: string = '${build.version}';
 
     /**
-     * Frontend build timestamp.
+     * Frontend build identification (timestamp).
      */
     build: string = '${build.timestamp}';
 

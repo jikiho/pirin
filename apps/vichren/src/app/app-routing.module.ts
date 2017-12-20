@@ -4,9 +4,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 
+import {BrowserComponent} from './browser/browser.component';
 import {DatasetsDetailComponent} from './datasets/detail.component';
 import {DatasetsListComponent} from './datasets/list.component';
-import {DimensionsFilterComponent} from './dimensions/filter.component';
+import {DimensionsListComponent} from './dimensions/list.component';
 import {HomeComponent} from './home.component';
 
 /**
@@ -14,8 +15,12 @@ import {HomeComponent} from './home.component';
  */
 const routes: Routes = [
     {
-        path: 'datasets/filter',
-        component: DimensionsFilterComponent
+        path: 'browser',
+        component: BrowserComponent
+    },
+    {
+        path: 'dimensions',
+        component: DimensionsListComponent
     },
     {
         path: 'datasets/:id',
@@ -27,7 +32,8 @@ const routes: Routes = [
     },
     {
         path: '**',
-        component: HomeComponent
+        //component: HomeComponent
+        redirectTo: 'browser'
     }
 ];
 

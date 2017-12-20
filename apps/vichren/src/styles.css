@@ -2,8 +2,25 @@ body {
     margin: 1em;
 }
 
-details summary {
+nav {
+    word-spacing: -0.25em;
+}
+
+nav ul {
+    padding: 0;
+}
+
+nav li {
     display: inline-block;
+    word-spacing: 0;
+}
+
+nav li + li:before {
+    content: "|";
+    margin: 0 0.25em;
+}
+
+details summary {
     cursor: pointer;
 }
 
@@ -12,8 +29,20 @@ table {
     border-spacing: 0;
 }
 
+thead {
+    border-bottom: 1px solid black;
+}
+
 tbody tr {
     border-top: 1px solid black;
+}
+
+th {
+    text-align: left;
+}
+
+th[colspan] {
+    text-align: center;
 }
 
 th, td {
@@ -39,4 +68,18 @@ dl * + dt {
 
 .inline dd:after {
     content: ';';
+}
+
+a[disabled], [disabled] a {
+    pointer-events: none;
+    color: inherit;
+    cursor: default;
+}
+
+[disabled] {
+    opacity: 0.6;
+}
+
+.compact {
+    white-space: nowrap;
 }

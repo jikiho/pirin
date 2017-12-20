@@ -22,8 +22,8 @@ export class DatasetsListComponent implements OnInit {
     load() {
         this.items$.next(null);
 
-        this.http.get('api:facts').subscribe(response => {
-            this.items$.next(<DatasetModel[]>response['values']);
-        });
+        this.http.get('api:facts')
+            .map(response => response['values'])
+            .subscribe(values => this.items$.next(<DatasetModel[]>values));
     }
 }
