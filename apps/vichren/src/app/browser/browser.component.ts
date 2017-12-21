@@ -104,7 +104,7 @@ export class BrowserComponent implements OnInit {
     /**
      * Sets and shows the list.
      */
-    private list(items?: DatasetModel[] = this.items) {
+    private list(items: DatasetModel[] = this.items) {
         this.index = -1;
 
         this.items = items;
