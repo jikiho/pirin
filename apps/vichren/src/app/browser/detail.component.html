@@ -1,15 +1,15 @@
 <nav>
     <ul>
-        <li><a routerLink="/browser" [queryParams]="{id: previous}" [attr.disabled]="!previous || undefined" i18n-title title="Show previous detail" i18n>Previous detail</a></li>
-        <li><a routerLink="/browser" [queryParams]="{id: next}" [attr.disabled]="!next || undefined"  i18n-title title="Show next detail" i18n>Next detail</a></li>
-        <li><a routerLink="/browser" i18n-title title="Close detail" i18n>Close detail</a></li>
+        <li><a routerLink="/browser" [queryParams]="{id: previous?.id}" [attr.disabled]="!previous || undefined" i18n-title title="Show previous detail" i18n>Previous detail</a></li>
+        <li><a routerLink="/browser" [queryParams]="{id: next?.id}" [attr.disabled]="!next || undefined"  i18n-title title="Show next detail" i18n>Next detail</a></li>
+        <li><a routerLink="/browser" i18n-title title="Show list" i18n>Close detail</a></li>
     </ul>
 </nav>
 
 <article>
-    <h2>{{item.name}}</h2>
-
     <section>
+        <h2>{{item.name}}</h2>
+
         <dl class="inline">
             <!--
             <dt i18n>ID</dt>

@@ -10,8 +10,6 @@ import {DatasetModel} from './dataset.model';
 export class BrowserDetailComponent {
     @Input() item: DatasetModel;
 
-    @Input() current: string;
-
     @Input() previous: string;
 
     @Input() next: string;

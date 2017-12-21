@@ -12,21 +12,53 @@ import {DatasetModel} from './dataset.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BrowserComponent implements OnInit {
+    /**
+     * Current, previous, next, first and last items.
+     */
+    get current(): DatasetModel {
+        return this.index > -1 && this.items[this.index] || undefined;
+    }
+
+    get previous(): DatasetModel {
+        return this.index > -1 && this.items[this.index - 1] || undefined;
+    }
+
+    get next(): DatasetModel {
+        return this.index > -1 && this.items[this.index + 1] || undefined;
+    }
+
+    get first(): DatasetModel {
+        return this.index > -1 && this.items[0] || undefined;
+    }
+
+    get last(): DatasetModel {
+        return this.index > -1 && this.items[this.items.length - 1] || undefined;
+    }
+
+    /**
+     * List offset (index of the previous page last item).
+     */
     offset: number;
 
-    index: number;
+    /**
+     * Flag to show the detail view, list otherwise.
+     */
+    detailed: boolean = false;
 
-    current: string;
-
-    previous: string;
-
-    next: string;
-
-    detail: boolean = false;
-
+    /**
+     * Actual list of items (stream).
+     */
     items$: Subject<DatasetModel[]> = new Subject();
 
+    /**
+     * List of items.
+     */
     private items: DatasetModel[];
+
+    /**
+     * Index of the current selected item.
+     */
+    private index: number;
 
     constructor(private http: HttpClient, private route: ActivatedRoute,
             app: AppService) {
@@ -44,6 +76,9 @@ export class BrowserComponent implements OnInit {
         });
     }
 
+    /**
+     * Loads the list.
+     */
     private loadList(params: any) {
         this.items$.next(null);
 
@@ -53,34 +88,40 @@ export class BrowserComponent implements OnInit {
             .map(items => items.map(item => DatasetModel.convert(item)))
             .map(items => items.filter(item => item && item.type))
             //.do(items => console.debug("ITEMS", items))
-            .subscribe(items => this.detail = !this.list(items));
+            .subscribe(items => this.list(items));
     }
 
+    /**
+     * Loads the detail.
+     */
     private loadDetail(params: any) {
         this.http.get(`api:facts/${params.id}`)
             .map(item => DatasetModel.convert(item))
             //.do(item => console.debug("ITEM", item))
-            .subscribe(item => this.detail = this.update(item));
+            .subscribe(item => this.detail(item));
     }
 
-    private list(items: DatasetModel[]): boolean {
+    /**
+     * Sets and shows the list.
+     */
+    private list(items?: DatasetModel[] = this.items) {
         this.index = -1;
-        this.current = this.previous = this.next = undefined;
 
         this.items = items;
         this.items$.next(this.items);
 
-        return true;
+        this.detailed = false;
     }
 
-    private update(item: DatasetModel): boolean {
-        this.index = -1;
-        this.current = this.previous = this.next = undefined;
-
+    /**
+     * Updates or sets an item and shows the detail.
+     */
+    private detail(item: DatasetModel) {
         if (!this.items) {
             this.items = [new DatasetModel()];
-            this.offset = 0;
             this.index = 0;
+
+            this.offset = 0;
         }
         else {
             this.index = this.items.findIndex(current => current.id === item.id);
@@ -90,21 +131,7 @@ export class BrowserComponent implements OnInit {
             Object.assign(this.items[this.index], item);
             this.items$.next(this.items);
 
-            this.current = item.id;
-
-            item = this.items[this.index - 1];
-            if (item) {
-                this.previous = item.id;
-            }
-
-            item = this.items[this.index + 1];
-            if (item) {
-                this.next = item.id;
-            }
-
-            return true;
+            this.detailed = true;
         }
-
-        return false;
     }
 }

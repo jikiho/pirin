@@ -3,6 +3,6 @@
 <h2 i18n>Browser</h2>
 
 <ng-container *ngIf="items$ | async as items; else unavailable">
-    <browser-list-component [items]="items" [offset]="offset" [hidden]="detail"></browser-list-component>
-    <browser-detail-component *ngIf="index > -1" [item]="items[index]" [current]="current" [previous]="previous" [next]="next" [hidden]="!detail"></browser-detail-component>
+    <browser-list-component (view)="view($event)" [items]="items" [offset]="offset" [hidden]="detailed"></browser-list-component>
+    <browser-detail-component *ngIf="current" (view)="view($event)" [item]="current" [previous]="previous" [next]="next" [hidden]="!detailed"></browser-detail-component>
 </ng-container>
