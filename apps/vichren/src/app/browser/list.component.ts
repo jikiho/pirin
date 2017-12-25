@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 
-import {DatasetModel} from './dataset.model';
+import {FormModel} from './form.model';
 
 @Component({
     selector: 'browser-list-component',
@@ -8,7 +8,7 @@ import {DatasetModel} from './dataset.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BrowserListComponent {
-    @Input() items: DatasetModel[];
+    @Input() items: FormModel[];
 
     @Input() offset: number = 0;
 }

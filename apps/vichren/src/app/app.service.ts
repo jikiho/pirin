@@ -75,3 +75,52 @@ export class AppService {
         return locale.split('-')[0];
     }
 }
+
+/**
+ * Prevod mapy na JSON.
+ */
+Map.prototype.hasOwnProperty('toJSON') ||
+        Object.defineProperty(Map.prototype, 'toJSON', {
+    value: function() {
+        let items = {
+            keys: [],
+            values: []
+        };
+
+        this.forEach((value, key) => {
+            items.keys.push(key);
+            items.values.push(value);
+        });
+
+        return JSON.stringify(items);
+    }
+});
+
+/**
+ * Bezpecny prevodenou hodnoty na JSON.
+ */
+JSON.stringify = ((stringify: Function) => {
+    return (value: any, replacer?: any, space: number = 4) => {
+        let refs = new Set();
+
+        try {
+            return stringify(value, replacer || ((key, value) => {
+                if (typeof value === 'object' && value) {
+                    if (refs.has(value)) {
+                        let name = value.constructor.name,
+                            definition = name === 'Object' ? `${name} {...}` : `class ${name} {...}`;
+                        return `${definition} //circular structure`;
+                    }
+                    refs.add(value);
+                }
+                return value;
+            }), space);
+        }
+        catch (error) {
+            throw error;
+        }
+        finally {
+            refs.clear();
+        }
+    };
+})(JSON.stringify);

@@ -1,0 +1,53 @@
+/**
+ * Provides the HTTP request/response services.
+ */
+import {NgModule} from '@angular/core';
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
+
+import {AppService} from '../app.service';
+import {CacheInterceptor} from './cache.interceptor';
+import {ConfigService} from '../config.service';
+import {LocaleInterceptor} from './locale.interceptor';
+import {ResourceInterceptor} from './resource.interceptor';
+import {ResponseInterceptor} from './response.interceptor';
+import {TimeoutInterceptor} from './timeout.interceptor';
+
+@NgModule({
+    imports: [
+        HttpClientModule
+    ],
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ResponseInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LocaleInterceptor,
+            multi: true,
+            deps: [AppService]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TimeoutInterceptor,
+            multi: true,
+            deps: [ConfigService]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: CacheInterceptor,
+            multi: true,
+            deps: [ConfigService]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ResourceInterceptor,
+            multi: true,
+            deps: [ConfigService]
+        }
+    ]
+})
+
+export class HttpModule {
+}

@@ -1,9 +1,10 @@
 /**
- * Main application routing module.
+ * Main application router module.
  */
 import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import {RouterModule, Routes, RouteReuseStrategy} from '@angular/router';
 
+import {AppRouteReuseStrategy} from './app-route.reuse-strategy';
 import {BrowserComponent} from './browser/browser.component';
 import {DatasetsDetailComponent} from './datasets/detail.component';
 import {DatasetsListComponent} from './datasets/list.component';
@@ -54,11 +55,17 @@ export function getFalse(): boolean {
         RouterModule
     ],
     providers: [
+        /*
+        {
+            provide: RouteReuseStrategy,
+            useClass: AppRouteReuseStrategy
+        },
+        */
         {
             provide: 'stop',
             useValue: getFalse
         }
     ]
 })
-export class AppRoutingModule {
+export class AppRouterModule {
 }

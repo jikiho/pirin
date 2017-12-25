@@ -23,6 +23,11 @@ export class EnvironmentBase {
     build: string = '${build.timestamp}';
 
     /**
+     * Allow request cache.
+     */
+    requestCache: boolean = true;
+
+    /**
      * Request timeout (s).
      */
     requestTimeout: number = 1 * 60;

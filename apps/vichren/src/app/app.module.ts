@@ -8,7 +8,7 @@ import {NxModule} from '@nrwl/nx';
 
 import {AboutComponent} from './about.component';
 import {AppComponent} from './app.component';
-import {AppRoutingModule} from './app-routing.module';
+import {AppRouterModule} from './app-router.module';
 import {AppService} from './app.service';
 import {BoolericPipe} from './booleric.pipe';
 import {BrowserComponent} from './browser/browser.component';
@@ -22,7 +22,7 @@ import {DatericPipe} from './dateric.pipe';
 import {DialogDirective} from './dialog.directive';
 import {DimensionsListComponent} from './dimensions/list.component';
 import {HomeComponent} from './home.component';
-import {HttpModule} from './http.module';
+import {HttpModule} from './http/http.module';
 import {NumericPipe} from './numeric.pipe';
 import {TimestampPipe} from './timestamp.pipe';
 
@@ -32,7 +32,7 @@ import {TimestampPipe} from './timestamp.pipe';
         FormsModule,
         HttpModule,
         NxModule.forRoot(),
-        AppRoutingModule
+        AppRouterModule
     ],
     declarations: [
         AboutComponent,
@@ -53,7 +53,8 @@ import {TimestampPipe} from './timestamp.pipe';
     ],
     providers: [
         AppService,
-        ConfigService
+        ConfigService,
+        //Utils
     ],
     bootstrap: [
         AppComponent

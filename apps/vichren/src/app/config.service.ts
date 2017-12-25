@@ -133,6 +133,11 @@ export class ConfigService {
     build: string = environment.build;
 
     /**
+     * Allow request cache.
+     */
+    requestCache: boolean = environment.requestCache;
+
+    /**
      * Request timeout (s).
      */
     requestTimeout: number = environment.requestTimeout;

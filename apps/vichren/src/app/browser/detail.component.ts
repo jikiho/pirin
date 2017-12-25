@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 
-import {DatasetModel} from './dataset.model';
+import {FormModel} from './form.model';
 
 @Component({
     selector: 'browser-detail-component',
@@ -8,9 +8,9 @@ import {DatasetModel} from './dataset.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BrowserDetailComponent {
-    @Input() item: DatasetModel;
+    @Input() item: FormModel;
 
-    @Input() previous: string;
+    @Input() previous: FormModel;
 
-    @Input() next: string;
+    @Input() next: FormModel;
 }
