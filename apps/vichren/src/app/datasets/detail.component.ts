@@ -14,7 +14,7 @@ import {DatasetModel} from './dataset.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetsDetailComponent implements OnInit {
-    item$:BehaviorSubject<DatasetModel> = new BehaviorSubject();
+    item$:BehaviorSubject<DatasetModel> = new BehaviorSubject(null);
 
     constructor(private route: ActivatedRoute, private http: HttpClient) {
         this.route.params.subscribe(params => this.load(params.id));

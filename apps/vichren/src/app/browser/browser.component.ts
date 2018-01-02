@@ -48,7 +48,7 @@ export class BrowserComponent implements OnInit {
     /**
      * Actual list of items (stream).
      */
-    items$: BehaviorSubject<FormModel[]> = new BehaviorSubject();
+    items$: BehaviorSubject<FormModel[]> = new BehaviorSubject(null);
 
     /**
      * List of items.

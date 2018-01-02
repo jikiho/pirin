@@ -10,7 +10,7 @@ import {DatasetModel} from './dataset.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetsListComponent implements OnInit {
-    items$: BehaviorSubject<DatasetModel[]> = new BehaviorSubject();
+    items$: BehaviorSubject<DatasetModel[]> = new BehaviorSubject(null);
 
     constructor(private http: HttpClient) {
     }

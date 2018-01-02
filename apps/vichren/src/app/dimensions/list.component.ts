@@ -10,7 +10,7 @@ import {DimensionModel} from './dimension.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DimensionsListComponent implements OnInit {
-    items$: BehaviorSubject<DimensionModel[]> = new BehaviorSubject();
+    items$: BehaviorSubject<DimensionModel[]> = new BehaviorSubject(null);
 
     constructor(private http: HttpClient) {
     }
