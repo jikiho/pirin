@@ -1,7 +1,7 @@
 import {Component, ChangeDetectionStrategy, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
-import {Subject} from 'rxjs/Rx';
+import {BehaviorSubject} from 'rxjs/Rx';
 
 import {AppService} from '../app.service';
 import {FormModel} from './form.model';
@@ -48,7 +48,7 @@ export class BrowserComponent implements OnInit {
     /**
      * Actual list of items (stream).
      */
-    items$: Subject<FormModel[]> = new Subject();
+    items$: BehaviorSubject<FormModel[]> = new BehaviorSubject();
 
     /**
      * List of items.
@@ -87,6 +87,7 @@ export class BrowserComponent implements OnInit {
         this.http.get('api:facts')
             .do(response => this.offset = response['paging'].from || 0)
             .map(response => response['values'])
+            .map(items => items.filter(item => item.alias === 'budget_form'))
             .map(items => items.map(item => FormModel.convert(item)))
             //.do(items => console.debug("ITEMS", items))
             .subscribe(items => this.list(items));

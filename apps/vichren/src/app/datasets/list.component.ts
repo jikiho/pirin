@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs/Rx';
+import {BehaviorSubject} from 'rxjs/Rx';
 
 import {DatasetModel} from './dataset.model';
 
@@ -10,7 +10,7 @@ import {DatasetModel} from './dataset.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetsListComponent implements OnInit {
-    items$: Subject<DatasetModel[]> = new Subject();
+    items$: BehaviorSubject<DatasetModel[]> = new BehaviorSubject();
 
     constructor(private http: HttpClient) {
     }

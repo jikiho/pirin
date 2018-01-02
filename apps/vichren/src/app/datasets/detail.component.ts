@@ -4,7 +4,7 @@
 import {Component, ChangeDetectionStrategy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs/Rx';
+import {BehaviorSubject} from 'rxjs/Rx';
 
 import {DatasetModel} from './dataset.model';
 
@@ -14,7 +14,7 @@ import {DatasetModel} from './dataset.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DatasetsDetailComponent implements OnInit {
-    item$:Subject<DatasetModel> = new Subject();
+    item$:BehaviorSubject<DatasetModel> = new BehaviorSubject();
 
     constructor(private route: ActivatedRoute, private http: HttpClient) {
         this.route.params.subscribe(params => this.load(params.id));
@@ -27,7 +27,7 @@ export class DatasetsDetailComponent implements OnInit {
     load(id: string) {
         this.item$.next(null);
 
-        this.http.get(`api:facts/${id}`)
+        this.http.get(`api:facts/byId/${id}`)
             .subscribe(response => this.item$.next(<DatasetModel>response));
     }
 }

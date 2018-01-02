@@ -1,6 +1,6 @@
 import {Component, ChangeDetectionStrategy, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs/Rx';
+import {BehaviorSubject} from 'rxjs/Rx';
 
 import {DimensionModel} from './dimension.model';
 
@@ -10,7 +10,7 @@ import {DimensionModel} from './dimension.model';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DimensionsListComponent implements OnInit {
-    items$: Subject<DimensionModel[]> = new Subject();
+    items$: BehaviorSubject<DimensionModel[]> = new BehaviorSubject();
 
     constructor(private http: HttpClient) {
     }
@@ -22,7 +22,7 @@ export class DimensionsListComponent implements OnInit {
     load() {
         this.items$.next(null);
 
-        this.http.get('api:dimensions/full')
+        this.http.get('api:dimensions')
             .map(response => response['values'])
             .subscribe(values => this.items$.next(<DimensionModel[]>values));
     }
