@@ -82,12 +82,12 @@ export class BrowserComponent implements OnInit {
      */
     private loadList(params: any) {
         this.items$.next(null);
+        this.index = -1;
 
         this.http.get('api:facts')
             .do(response => this.offset = response['paging'].from || 0)
             .map(response => response['values'])
             .map(items => items.map(item => FormModel.convert(item)))
-            //.map(items => items.filter(item => item && item.type))
             //.do(items => console.debug("ITEMS", items))
             .subscribe(items => this.list(items));
     }
@@ -106,7 +106,7 @@ export class BrowserComponent implements OnInit {
      * Sets and shows the list.
      */
     private list(items: FormModel[] = this.items) {
-        this.index = -1;
+        this.index = items.length ? 0 : -1; //first item
 
         this.items = items;
         this.items$.next(this.items);
@@ -129,7 +129,7 @@ export class BrowserComponent implements OnInit {
         }
 
         if (this.index > -1) {
-            Object.assign(this.items[this.index], item);
+            this.items[this.index] = Object.assign({}, this.items[this.index], item); //clone item
             this.items$.next(this.items);
 
             this.detailed = true;

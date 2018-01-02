@@ -2,7 +2,16 @@
 
 <h2 i18n>Browser</h2>
 
+<nav>
+    <ul>
+        <li><a routerLink="/browser" [queryParams]="{id: previous?.id}" [attr.disabled]="!previous || undefined" i18n-title title="Show previous detail" i18n>Previous detail</a></li>
+        <li><a routerLink="/browser" [queryParams]="{id: next?.id}" [attr.disabled]="!next || undefined" i18n-title title="Show next detail" i18n>Next detail</a></li>
+        <li><a routerLink="/browser" [queryParams]="{id: current?.id}" [attr.disabled]="detailed || undefined" i18n-title title="Show detail" i18n>Open detail</a></li>
+        <li><a routerLink="/browser" [attr.disabled]="!detailed || undefined" i18n-title title="Show list" i18n>Close detail</a></li>
+    </ul>
+</nav>
+
 <ng-container *ngIf="items$ | async as items; else unavailable">
-    <browser-list-component (view)="view($event)" [items]="items" [offset]="offset" [hidden]="detailed"></browser-list-component>
-    <browser-detail-component *ngIf="current" (view)="view($event)" [item]="current" [previous]="previous" [next]="next" [hidden]="!detailed"></browser-detail-component>
+    <browser-list-component [items]="items" [offset]="offset" [hidden]="detailed"></browser-list-component>
+    <browser-detail-component *ngIf="current" [item]="current" [previous]="previous" [next]="next" [hidden]="!detailed"></browser-detail-component>
 </ng-container>

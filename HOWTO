@@ -1,0 +1,5 @@
+# Check actual dependencies
+yarn outdated
+
+# Serve
+yarn run start-locale cs_CZ --app vichren

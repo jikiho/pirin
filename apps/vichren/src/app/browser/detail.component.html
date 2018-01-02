@@ -1,11 +1,3 @@
-<nav>
-    <ul>
-        <li><a routerLink="/browser" [queryParams]="{id: previous?.id}" [attr.disabled]="!previous || undefined" i18n-title title="Show previous detail" i18n>Previous detail</a></li>
-        <li><a routerLink="/browser" [queryParams]="{id: next?.id}" [attr.disabled]="!next || undefined"  i18n-title title="Show next detail" i18n>Next detail</a></li>
-        <li><a routerLink="/browser" i18n-title title="Show list" i18n>Close detail</a></li>
-    </ul>
-</nav>
-
 <article>
     <section>
         <h2>{{item.name}}</h2>
@@ -30,6 +22,7 @@
                     <!--
                     <th i18n>ID</th>
                     -->
+                    <th i18n>Name</th>
                     <th i18n>EBK</th>
                     <th i18n>EBK Title</th>
                     <th i18n>CPV</th>
@@ -47,6 +40,7 @@
                     <!--
                     <td>{{value.id}}</td>
                     -->
+                    <td>{{value.name}}</td>
                     <td class="compact">{{value.ebk}}</td>
                     <td>{{value.ebkTitle}}</td>
                     <td class="compact">{{value.cpv}}</td>

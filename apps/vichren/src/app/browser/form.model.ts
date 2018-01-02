@@ -87,6 +87,7 @@ export class FormModel {
 
                 children.push({
                     id: child.id,
+                    name: child.name,
                     metadata,
                     values
                 });
@@ -108,6 +109,7 @@ export class FormModel {
             values: children.map(child => Object.assign(new ValueModel(), {
                 id: child.id,
                 status: child.values[ValueModel.STATUS],
+                name: child.name,
                 ebk: child.values[ValueModel.EBK],
                 cpv: child.values[ValueModel.CPV],
                 funding: child.values[ValueModel.FUNDING],
