@@ -7,8 +7,9 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AppService} from '../app.service';
 import {CacheInterceptor} from './cache.interceptor';
 import {ConfigService} from '../config.service';
+import {ErrorInterceptor} from './error.interceptor';
 import {LocaleInterceptor} from './locale.interceptor';
-import {ResourceInterceptor} from './resource.interceptor';
+import {RequestInterceptor} from './request.interceptor';
 import {ResponseInterceptor} from './response.interceptor';
 import {TimeoutInterceptor} from './timeout.interceptor';
 
@@ -20,6 +21,11 @@ import {TimeoutInterceptor} from './timeout.interceptor';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ResponseInterceptor,
+            multi: true
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorInterceptor,
             multi: true
         },
         {
@@ -42,7 +48,7 @@ import {TimeoutInterceptor} from './timeout.interceptor';
         },
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: ResourceInterceptor,
+            useClass: RequestInterceptor,
             multi: true,
             deps: [ConfigService]
         }

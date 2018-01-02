@@ -1,7 +1,7 @@
 /**
  * Provides a standard response handling.
  */
-import {HttpInterceptor, HttpRequest, HttpResponse, HttpErrorResponse, HttpHandler, HttpEvent} from '@angular/common/http';
+import {HttpInterceptor, HttpRequest, HttpResponse, HttpHandler, HttpEvent} from '@angular/common/http';
 import {Observable} from 'rxjs/Rx';
 
 export class ResponseInterceptor implements HttpInterceptor {

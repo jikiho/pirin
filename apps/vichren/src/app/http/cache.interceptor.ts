@@ -50,7 +50,7 @@ export class CacheInterceptor implements HttpInterceptor {
 
             if (response) {
                 //debuger
-                console.debug(`CACHE ${request.method || 'REQUEST'}`, response.url, request);
+                console.debug(`CACHED ${request.method || 'REQUEST'}`, response.url, request);
 
                 return Observable.of(response.clone());
             }

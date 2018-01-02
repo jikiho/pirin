@@ -6,7 +6,7 @@ import {Observable} from 'rxjs/Rx';
 
 import {ConfigService, ConfigResource} from '../config.service';
 
-export class ResourceInterceptor implements HttpInterceptor {
+export class RequestInterceptor implements HttpInterceptor {
     constructor(private config: ConfigService) {
     }
 
@@ -35,15 +35,11 @@ export class ResourceInterceptor implements HttpInterceptor {
 
         return next.handle(request)
             .catch((error, caught) => {
-                //debuger
-                console.debug('FAILED', error.status, error.url || request.url, error);
-
                 if (resource && resource.retry(error, base)) {
                     return this.makeRequest(original, next, pathname, resource, retry += 1);
                 }
 
                 return Observable.throw(error);
-                //return Observable.empty();
             });
     }
 }
