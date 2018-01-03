@@ -56,6 +56,7 @@ export class BrowserComponent implements OnInit {
 
         this.route.queryParams.subscribe(params => {
             if (params.id) {
+                this.detail(params.id);
                 this.loadDetail(params);
             }
             else {
@@ -115,7 +116,7 @@ export class BrowserComponent implements OnInit {
     private loadDetail(params: any) {
         this.http.get(`api:facts/byId/${params.id}`)
             .map(item => FormModel.convert(item))
-            .subscribe(item => this.detail(item));
+            .subscribe(item => this.detail(item.id, item));
     }
 
     /**
@@ -132,15 +133,24 @@ export class BrowserComponent implements OnInit {
     /**
      * Updates or sets an item and shows the detail.
      */
-    private detail(item: FormModel) {
-        const items = this.items ? [...this.items] : [new FormModel()],
-            index = this.items ? items.findIndex(current => current.id === item.id) : 0;
+    private detail(id: string, item?: FormModel) {
+        const items = this.items,
+            index = items ? items.findIndex(item => item.id === id) : -1;
+
+        this.index = index;
 
         if (index > -1) {
-            items[index] = items[index].clone(item);
-            this.index = index;
-
-            this.items$.next(items);
+            if (item) {
+                items[index] = items[index].clone(item);
+                this.items$.next(items);
+            }
+        }
+        else if (items) {
+            //?
+        }
+        else if (item) {
+            this.offset = 0;
+            this.items$.next([item]);
         }
 
         this.detailed = true;
