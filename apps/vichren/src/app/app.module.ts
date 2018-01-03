@@ -21,6 +21,7 @@ import {DatasetsListComponent} from './datasets/list.component';
 import {DatericPipe} from './dateric.pipe';
 import {DialogDirective} from './dialog.directive';
 import {DimensionsListComponent} from './dimensions/list.component';
+import {DisabledDirective} from './disabled.directive';
 import {HomeComponent} from './home.component';
 import {HttpModule} from './http/http.module';
 import {NumericPipe} from './numeric.pipe';
@@ -47,6 +48,7 @@ import {TimestampPipe} from './timestamp.pipe';
         DatericPipe,
         DialogDirective,
         DimensionsListComponent,
+        DisabledDirective,
         HomeComponent,
         NumericPipe,
         TimestampPipe

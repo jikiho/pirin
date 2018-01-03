@@ -48,6 +48,13 @@ export class FormModel {
     values: ValueModel[];
     metadata: MetadataModel;
 
+    /**
+     * Returns copy of the form model.
+     */
+    clone(update: any = {}) {
+        return Object.assign(new FormModel(), this, update);
+    }
+
     // conversion names
     static readonly ID = 'id';
     static readonly NAME = 'name';

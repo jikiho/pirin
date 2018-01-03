@@ -13,27 +13,13 @@ import {FormModel} from './form.model';
 })
 export class BrowserComponent implements OnInit {
     /**
-     * Current, previous, next, first and last items.
+     * Corresponding values.
      */
-    get current(): FormModel {
-        return this.index > -1 && this.items[this.index] || undefined;
-    }
-
-    get previous(): FormModel {
-        return this.index > -1 && this.items[this.index - 1] || undefined;
-    }
-
-    get next(): FormModel {
-        return this.index > -1 && this.items[this.index + 1] || undefined;
-    }
-
-    get first(): FormModel {
-        return this.index > -1 && this.items[0] || undefined;
-    }
-
-    get last(): FormModel {
-        return this.index > -1 && this.items[this.items.length - 1] || undefined;
-    }
+    current: FormModel;
+    previous: FormModel;
+    next: FormModel;
+    first: FormModel;
+    last: FormModel;
 
     /**
      * List offset (index of the previous page last item).
@@ -46,7 +32,7 @@ export class BrowserComponent implements OnInit {
     detailed: boolean = false;
 
     /**
-     * Actual list of items (stream).
+     * Stream of the list of items.
      */
     items$: BehaviorSubject<FormModel[]> = new BehaviorSubject(null);
 
@@ -56,9 +42,9 @@ export class BrowserComponent implements OnInit {
     private items: FormModel[];
 
     /**
-     * Index of the current selected item.
+     * Index of the current item.
      */
-    private index: number;
+    private index: number = -1;
 
     constructor(private http: HttpClient, private route: ActivatedRoute,
             app: AppService) {
@@ -66,9 +52,10 @@ export class BrowserComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.items$.subscribe(items => this.synchronize(items));
+
         this.route.queryParams.subscribe(params => {
             if (params.id) {
-                //this.detail(params);
                 this.loadDetail(params);
             }
             else {
@@ -78,18 +65,47 @@ export class BrowserComponent implements OnInit {
     }
 
     /**
+     * Synchronizes values.
+     */
+    private synchronize(items?: FormModel[]) {
+        const length = items ? items.length : 0,
+            last = length - 1;
+
+        this.items = items;
+
+        if (!length) {
+            this.index = -1;
+        }
+        else if (this.index < 0) {
+            this.index = 0;
+        }
+        else if (this.index > last) {
+            this.index = last;
+        }
+
+        if (this.index > -1) {
+            this.current = items[this.index];
+            this.previous = items[this.index - 1] || undefined;
+            this.next = items[this.index + 1] || undefined;
+            this.first = this.index > 0 ? items[0] : undefined;
+            this.last = this.index < last ? items[last] : undefined;
+        }
+        else {
+            this.current = this.previous = this.next = this.first = this.last = undefined;
+        }
+    }
+
+    /**
      * Loads the list.
      */
     private loadList(params: any) {
-        this.items$.next(null);
-        this.index = -1;
+        //this.items$.next(null);
 
         this.http.get('api:facts')
             .do(response => this.offset = response['paging'].from || 0)
             .map(response => response['values'])
             .map(items => items.filter(item => item.alias === 'budget_form'))
             .map(items => items.map(item => FormModel.convert(item)))
-            //.do(items => console.debug("ITEMS", items))
             .subscribe(items => this.list(items));
     }
 
@@ -99,18 +115,16 @@ export class BrowserComponent implements OnInit {
     private loadDetail(params: any) {
         this.http.get(`api:facts/byId/${params.id}`)
             .map(item => FormModel.convert(item))
-            //.do(item => console.debug("ITEM", item))
             .subscribe(item => this.detail(item));
     }
 
     /**
      * Sets and shows the list.
      */
-    private list(items: FormModel[] = this.items) {
-        this.index = items.length ? 0 : -1; //first item
-
-        this.items = items;
-        this.items$.next(this.items);
+    private list(items?: FormModel[]) {
+        if (items) {
+            this.items$.next(items);
+        }
 
         this.detailed = false;
     }
@@ -119,21 +133,16 @@ export class BrowserComponent implements OnInit {
      * Updates or sets an item and shows the detail.
      */
     private detail(item: FormModel) {
-        if (!this.items) {
-            this.items = [new FormModel()];
-            this.index = 0;
+        const items = this.items ? [...this.items] : [new FormModel()],
+            index = this.items ? items.findIndex(current => current.id === item.id) : 0;
 
-            this.offset = 0;
-        }
-        else {
-            this.index = this.items.findIndex(current => current.id === item.id);
+        if (index > -1) {
+            items[index] = items[index].clone(item);
+            this.index = index;
+
+            this.items$.next(items);
         }
 
-        if (this.index > -1) {
-            this.items[this.index] = Object.assign({}, this.items[this.index], item); //clone item
-            this.items$.next(this.items);
-
-            this.detailed = true;
-        }
+        this.detailed = true;
     }
 }
