@@ -1,7 +1,7 @@
 /**
- * Dataset model.
+ * Fact model.
  */
-export class DatasetModel {
+export class FactModel {
     id: string;
     name: string;
     metadata?: any;

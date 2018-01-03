@@ -6,9 +6,9 @@ import {RouterModule, Routes, RouteReuseStrategy} from '@angular/router';
 
 import {AppRouteReuseStrategy} from './app-route.reuse-strategy';
 import {BrowserComponent} from './browser/browser.component';
-import {DatasetsDetailComponent} from './datasets/detail.component';
-import {DatasetsListComponent} from './datasets/list.component';
 import {DimensionsListComponent} from './dimensions/list.component';
+import {FactsDetailComponent} from './facts/detail.component';
+import {FactsListComponent} from './facts/list.component';
 import {HomeComponent} from './home.component';
 
 /**
@@ -24,12 +24,12 @@ const routes: Routes = [
         component: DimensionsListComponent
     },
     {
-        path: 'datasets/:id',
-        component: DatasetsDetailComponent
+        path: 'facts/:id',
+        component: FactsDetailComponent
     },
     {
-        path: 'datasets',
-        component: DatasetsListComponent
+        path: 'facts',
+        component: FactsListComponent
     },
     {
         path: '**',

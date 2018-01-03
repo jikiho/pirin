@@ -1,12 +1,12 @@
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 
-import {DatasetModel} from './dataset.model';
+import {FactModel} from './fact.model';
 
 @Component({
-    selector: 'datasets-children-component',
+    selector: 'facts-children-component',
     templateUrl: './children.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DatasetsChildrenComponent {
-    @Input() items: DatasetModel[];
+export class FactsChildrenComponent {
+    @Input() items: FactModel[];
 }

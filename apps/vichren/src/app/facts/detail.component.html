@@ -1,6 +1,6 @@
 <ng-template #unavailable i18n><p>n/a</p></ng-template>
 
-<h2>Dataset</h2>
+<h2>Fact</h2>
 
 <ng-container *ngIf="item$ | async as item; else unavailable">
     <dl>
@@ -38,6 +38,6 @@
 
     <h3 i18n>Children</h3>
     <ng-container *ngIf="item.children.length; else unavailable">
-        <datasets-children-component [items]="item.children"></datasets-children-component>
+        <facts-children-component [items]="item.children"></facts-children-component>
     </ng-container>
 </ng-container>

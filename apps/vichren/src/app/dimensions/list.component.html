@@ -2,86 +2,30 @@
 
 <h2>Dimensions</h2>
 
-<form #form="ngForm" *ngIf="items$ | async as items; else unavailable">
-    <dl>
-        <ng-container *ngFor="let item of items">
-            <dt>{{item.name}}</dt>
-
-            <ng-container *ngIf="item.mode === 'SINGLE' && item.structure === 'FLAT'">
-                <dd>
-                    <label>
-                        <input type="radio" [name]="item.code" [value]="" checked>
-                        <ng-container i18n>none</ng-container>
-                    </label>
-                </dd>
-                <dd *ngFor="let value of item.values">
-                    <label>
-                        <input type="radio" [name]="item.code" [value]="value.code">
-                        <abbr [title]="value.name">{{value.code}}</abbr>
-                        <dfn>{{value.name}}</dfn>
-                    </label>
-                </dd>
-            </ng-container>
-
-            <ng-container *ngIf="item.mode === 'MULTI' && item.structure === 'FLAT'">
-                <dd>
-                    <label>
-                        <input type="checkbox" [name]="item.code" [value]="" [checked]="undefined" disabled>
-                        <ng-container i18n>all/none</ng-container>
-                    </label>
-                </dd>
-                <dd *ngFor="let value of item.values">
-                    <label>
-                        <input type="checkbox" [name]="item.code" [value]="value.code">
-                        <abbr [title]="value.name">{{value.code}}</abbr>
-                        <dfn>{{value.name}}</dfn>
-                    </label>
-                </dd>
-            </ng-container>
-
-            <ng-container *ngIf="item.mode === 'SINGLE' && item.structure === 'TREE'">
-                <dd>
-                    <label>
-                        <input type="radio" [name]="item.code" [value]="" checked>
-                        <ng-container i18n>none</ng-container>
-                    </label>
-                </dd>
-
-                <ng-container *ngTemplateOutlet="singleTree; context: {$implicit: item.values}"></ng-container>
-
-                <ng-template #singleTree let-values>
-                    <dd *ngFor="let value of values">
-                        <label>
-                            <input type="radio" [name]="item.code" [value]="value.code">
-                            <abbr [title]="value.name">{{value.code}}</abbr>
-                            <dfn>{{value.name}}</dfn>
-                        </label>
-                        <ng-container *ngTemplateOutlet="singleTree; context: {$implicit: value.children}"></ng-container>
-                    </dd>
-                </ng-template>
-            </ng-container>
-
-            <ng-container *ngIf="item.mode === 'MULTI' && item.structure === 'TREE'">
-                <dd>
-                    <label>
-                        <input type="checkbox" [name]="item.code" [value]="" [checked]="undefined" disabled>
-                        <ng-container i18n>all/none</ng-container>
-                    </label>
-                </dd>
-
-                <ng-container *ngTemplateOutlet="multiTree; context: {$implicit: item.values}"></ng-container>
-
-                <ng-template #multiTree let-values>
-                    <dd *ngFor="let value of values">
-                        <label>
-                            <input type="checkbox" [name]="item.code" [value]="value.code" [disabled]="value.children.length">
-                            <abbr [title]="value.name">{{value.code}}</abbr>
-                            <dfn>{{value.name}}</dfn>
-                        </label>
-                        <ng-container *ngTemplateOutlet="multiTree; context: {$implicit: value.children}"></ng-container>
-                    </dd>
-                </ng-template>
-            </ng-container>
-        </ng-container>
-    </dl>
-</form>
+<ng-container *ngIf="items$ | async as items; else unavailable">
+    <table>
+        <thead>
+            <tr>
+                <th i18n>ID</th>
+                <th i18n>Name</th>
+                <th><abbr i18n-title title="Mode, structure and value type" i18n>Type</abbr></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of items">
+                <!--
+                <td><a routerLink="/dimensions/byId/{{item.id}}" i18n-title title="Show dimension detail">{{item.id}}</a></td>
+                -->
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td class="inline">
+                    <dl>
+                        <dd>{{item.mode | lowercase}}</dd>
+                        <dd>{{item.structure | lowercase}}</dd>
+                        <dd>{{item.valueType | lowercase}}</dd>
+                    </dl>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>
