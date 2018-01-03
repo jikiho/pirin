@@ -42,26 +42,28 @@ export class CacheInterceptor implements HttpInterceptor {
      */
     private makeRequest(request: HttpRequest<any>, next: HttpHandler,
             cachable: boolean, storable: boolean): Observable<HttpEvent<any>> {
-        //const key = JSON.stringify(utils.sortKeys({...request}));
+        //const key = JSON.stringify(utils.sortByKeys({...request}));
         const key = JSON.stringify(request);
 
         if (cachable) {
             const response = this.cache.get(key);
 
             if (response) {
-                //debuger
-                console.debug(`CACHED ${request.method || 'REQUEST'}`, response.url, request);
+                if (this.config.debug) {
+                    console.debug(`CACHED ${request.method || 'REQUEST'}`, response.url, request);
+                }
 
                 return Observable.of(response.clone());
             }
         }
 
         if (storable) {
-            return next.handle(request).do((response: HttpResponse<any>) => {
-                if (response instanceof HttpResponse) {
-                    this.cache.set(key, response);
-                }
-            });
+            return next.handle(request)
+                .do(response => {
+                    if (response instanceof HttpResponse) {
+                        this.cache.set(key, response);
+                    }
+                });
         }
 
         return next.handle(request);

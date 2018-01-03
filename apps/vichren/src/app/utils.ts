@@ -7,7 +7,7 @@ export class Utils {
      * Sorts an object by keys (strings).
      * Recreates the keys of an original object, use a copy to keep the original.
      */
-    static sortKeys(o: any, fn?: (a: string, b: string) => number): any {
+    static sortByKeys(o: any, fn?: (a: string, b: string) => number): any {
         const keys = o ? Object.keys(o) : undefined;
 
         if (keys) {
@@ -18,7 +18,7 @@ export class Utils {
                     value = o[key].sort();
                 }
                 else if (typeof o[key] === 'object') {
-                    value = Utils.sortKeys(o[key], fn);
+                    value = Utils.sortByKeys(o[key], fn);
                 }
                 else {
                     value = o[key];

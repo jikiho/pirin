@@ -21,12 +21,14 @@ import {TimeoutInterceptor} from './timeout.interceptor';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ResponseInterceptor,
-            multi: true
+            multi: true,
+            deps: [ConfigService]
         },
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ErrorInterceptor,
-            multi: true
+            multi: true,
+            deps: [ConfigService]
         },
         {
             provide: HTTP_INTERCEPTORS,

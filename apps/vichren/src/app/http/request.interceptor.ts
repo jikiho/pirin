@@ -1,7 +1,7 @@
 /**
  * Provides a request resource and retries.
  */
-import {HttpInterceptor, HttpRequest, HttpHandler, HttpEvent} from '@angular/common/http';
+import {HttpInterceptor, HttpRequest, HttpErrorResponse, HttpHandler, HttpEvent} from '@angular/common/http';
 import {Observable} from 'rxjs/Rx';
 
 import {ConfigService, ConfigResource} from '../config.service';
@@ -30,16 +30,19 @@ export class RequestInterceptor implements HttpInterceptor {
                 url: new URL(pathname, base).toString()
             });
 
-        //debuger
-        console.debug(`${retry ? 'RETRY ' : ''}${request.method || 'REQUEST'}`, request.url, request);
+        if (this.config.debug) {
+            console.debug(`${retry ? 'RETRY ' : ''}${request.method || 'REQUEST'}`, request.url, request);
+        }
 
         return next.handle(request)
-            .catch((error, caught) => {
+            .catch((error: HttpErrorResponse) => {
                 if (resource && resource.retry(error, base)) {
                     return this.makeRequest(original, next, pathname, resource, retry += 1);
                 }
 
-                return Observable.throw(error);
+                return Observable.throw(new HttpErrorResponse(Object.assign(error, {
+                    url: error.url || request.url
+                })));
             });
     }
 }

@@ -82,7 +82,9 @@ export class ConfigResource {
         if (this.bases.length > 1 && !this.suspends.has(base)) {
             const timer: number = window.setTimeout(() => this.resume(base), delay);
 
-            console.debug('SUSPEND', base);
+            if (this.config.debug) {
+                console.debug('SUSPEND', base);
+            }
 
             this.suspends.set(base, timer);
 
@@ -99,7 +101,9 @@ export class ConfigResource {
         const timer: number = this.suspends.get(base);
 
         if (timer) {
-            console.debug('RESUME', base);
+            if (this.config.debug) {
+                console.debug('RESUME', base);
+            }
 
             this.suspends.delete(base);
 

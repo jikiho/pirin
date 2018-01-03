@@ -77,7 +77,7 @@ export class AppService {
 }
 
 /**
- * Prevod mapy na JSON.
+ * Map to JSON conversion.
  */
 Map.prototype.hasOwnProperty('toJSON') ||
         Object.defineProperty(Map.prototype, 'toJSON', {
@@ -97,7 +97,7 @@ Map.prototype.hasOwnProperty('toJSON') ||
 });
 
 /**
- * Bezpecny prevodenou hodnoty na JSON.
+ * Circular-structure safe value to JSON conversion.
  */
 JSON.stringify = ((stringify: Function) => {
     return (value: any, replacer?: any, space: number = 4) => {
