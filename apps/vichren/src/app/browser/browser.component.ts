@@ -15,6 +15,7 @@ export class BrowserComponent implements OnInit {
     /**
      * Corresponding values.
      */
+    index: number;
     current: FormModel;
     previous: FormModel;
     next: FormModel;
@@ -40,11 +41,6 @@ export class BrowserComponent implements OnInit {
      * List of items.
      */
     private items: FormModel[];
-
-    /**
-     * Index of the current item.
-     */
-    private index: number = -1;
 
     constructor(private http: HttpClient, private route: ActivatedRoute,
             app: AppService) {

@@ -9,8 +9,4 @@ import {FormModel} from './form.model';
 })
 export class BrowserDetailComponent {
     @Input() item: FormModel;
-
-    @Input() previous: FormModel;
-
-    @Input() next: FormModel;
 }
