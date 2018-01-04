@@ -1,0 +1,46 @@
+<ng-template #unavailable i18n><p>n/a</p></ng-template>
+
+<ng-container *ngIf="browser$ | async as browser">
+    <h2 i18n>Budget forms</h2>
+
+    <browsing-component [base]="base" [browser]="browser" [detailed]="false"></browsing-component>
+
+    <article *ngIf="items$ | async as items; else unavailable">
+        <section>
+            <table>
+                <thead>
+                    <tr>
+                        <th><abbr i18n-title title="Item number" i18n>Nr.</abbr></th>
+                        <!--
+                        <th i18n>ID</th>
+                        -->
+                        <th i18n>Name</th>
+                        <th i18n>Organization</th>
+                        <th i18n>Period</th>
+                        <th i18n>Type</th>
+                        <th i18n>State</th>
+                        <th><abbr i18n-title title="Version" i18n>Vr.</abbr></th>
+                        <th i18n>User</th>
+                        <th i18n>Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items">
+                        <td>{{item.number}}</td>
+                        <!--
+                        <td>{{item.id}}</td>
+                        -->
+                        <td><a [routerLink]="[item.id]" i18n-title title="Show detail">{{item.name || item.id}}</a></td>
+                        <td>{{item.organization}}</td>
+                        <td>{{item.period}}</td>
+                        <td>{{item.type}}</td>
+                        <td>{{item.metadata.state}}</td>
+                        <td>{{item.metadata.version}}</td>
+                        <td>{{item.metadata.user}}</td>
+                        <td>{{item.metadata.timestamp | timestamp}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </article>
+</ng-container>

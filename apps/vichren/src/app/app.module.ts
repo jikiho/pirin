@@ -11,9 +11,10 @@ import {AppComponent} from './app.component';
 import {AppRouterModule} from './app-router.module';
 import {AppService} from './app.service';
 import {BoolericPipe} from './booleric.pipe';
-import {BrowserComponent} from './browser/browser.component';
-import {BrowserDetailComponent} from './browser/detail.component';
-import {BrowserListComponent} from './browser/list.component';
+import {BrowsingComponent} from './browsing/browsing.component';
+import {BudgetFormsDataService} from './budget-forms/data.service';
+import {BudgetFormsDetailComponent} from './budget-forms/detail.component';
+import {BudgetFormsListComponent} from './budget-forms/list.component';
 import {ConfigService} from './config.service';
 import {DatericPipe} from './dateric.pipe';
 import {DialogDirective} from './dialog.directive';
@@ -39,9 +40,9 @@ import {TimestampPipe} from './timestamp.pipe';
         AboutComponent,
         AppComponent,
         BoolericPipe,
-        BrowserComponent,
-        BrowserDetailComponent,
-        BrowserListComponent,
+        BrowsingComponent,
+        BudgetFormsDetailComponent,
+        BudgetFormsListComponent,
         DatericPipe,
         DialogDirective,
         DimensionsListComponent,
@@ -56,6 +57,7 @@ import {TimestampPipe} from './timestamp.pipe';
     providers: [
         AppService,
         ConfigService,
+        BudgetFormsDataService,
         //Utils
     ],
     bootstrap: [

@@ -1,6 +1,8 @@
 /**
- * Metadata model (the form or value state changing in time).
+ * Budget form model.
  */
+import {BehaviorSubject} from 'rxjs/Rx';
+
 class MetadataModel {
     user: string;
     timestamp: string;
@@ -14,10 +16,8 @@ class MetadataModel {
     static readonly VERSION = 'DVER';
 }
 
-/**
- * Value model (the form values).
- */
 class ValueModel {
+    number: number;
     id: string;
     status: string;
     ebk: string;
@@ -33,13 +33,10 @@ class ValueModel {
     static readonly CPV = 'DCPV';
     static readonly FUNDING = 'DFUN';
     static readonly AMOUNT = 'DAMT';
-    //static readonly CURRENCY = 'DCUR';
 }
 
-/**
- * Form model (form data, metadata and values).
- */
-export class FormModel {
+export class BudgetFormModel {
+    number: number;
     id: string;
     name: string;
     type: string;
@@ -48,11 +45,8 @@ export class FormModel {
     values: ValueModel[];
     metadata: MetadataModel;
 
-    /**
-     * Returns copy of the form model.
-     */
-    clone(update: any = {}) {
-        return Object.assign(new FormModel(), this, update);
+    clone(...args) {
+        return Object.assign.apply(this, [new BudgetFormModel(), this, ...args])
     }
 
     // conversion names
@@ -62,7 +56,7 @@ export class FormModel {
     static readonly PERIOD = 'DPER';
     static readonly ORGANIZATION = 'DORG';
 
-    static convert(item: any): FormModel {
+    static convert(item: any, index: number = -1): BudgetFormModel {
         let metadata = {},
             values = {},
             children = [];
@@ -101,19 +95,21 @@ export class FormModel {
             }
         }
 
-        return Object.assign(new FormModel(), {
-            id: item[FormModel.ID],
-            name: item[FormModel.NAME],
-            type: values[FormModel.TYPE],
-            period: values[FormModel.PERIOD] && values[FormModel.PERIOD].replace(/-Y$/, ''),
-            organization: values[FormModel.ORGANIZATION],
+        return Object.assign(new BudgetFormModel(), {
+            number: index + 1,
+            id: item[BudgetFormModel.ID],
+            name: item[BudgetFormModel.NAME],
+            type: values[BudgetFormModel.TYPE],
+            period: values[BudgetFormModel.PERIOD] && values[BudgetFormModel.PERIOD].replace(/-Y$/, ''),
+            organization: values[BudgetFormModel.ORGANIZATION],
             metadata: Object.assign(new MetadataModel(), {
                 user: metadata[MetadataModel.USER],
                 timestamp: metadata[MetadataModel.TIMESTAMP],
                 state: values[MetadataModel.STATE],
                 version: metadata[MetadataModel.VERSION]
             }),
-            values: children.map(child => Object.assign(new ValueModel(), {
+            values: children.map((child, index) => Object.assign(new ValueModel(), {
+                number: index + 1,
                 id: child.id,
                 status: child.values[ValueModel.STATUS],
                 name: child.name,
