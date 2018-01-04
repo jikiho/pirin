@@ -3,6 +3,17 @@
  *
  * Using the "Cache-Control" header to pass a request configuration.
  * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control
+ *
+ * Request configuration directives:
+r* if-no-match[=<etag>] (uses cached response etag by default)
+ * max-age=<seconds>
+ * min-fresh=<seconds>
+ * must-revalidate (same as max-age=0)
+ * no-cache
+ * no-store
+ * only-if-cached
+ * private
+ * public
  */
 import {HttpInterceptor, HttpRequest, HttpResponse, HttpHandler, HttpEvent} from '@angular/common/http';
 import {Observable} from 'rxjs/Rx';

@@ -39,12 +39,12 @@ export class TimeoutInterceptor implements HttpInterceptor {
         const msec = timeout * 1000; //milliseconds
 
         return next.handle(request).timeout(msec)
-            .catch((error: HttpErrorResponse) => {
+            .catch((error: Error) => {
                 if (error.name === 'TimeoutError') {
                     error = new HttpErrorResponse({
-                        status: -1, //runtime-like error
-                        statusText: 'Timeout Exceeded',
-                        url: error.url
+                        status: 524,
+                        statusText: 'A timeout occurred',
+                        url: request.url
                     });
                 }
 

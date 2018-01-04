@@ -12,11 +12,18 @@ export class ErrorInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request)
-            .catch((error: HttpErrorResponse) => {
+            .catch((error: Error) => {
                 const empty = true;
 
-                if (this.config.debug) {
-                    console.debug('FAILED', error.status, error.url, error);
+                if (error instanceof HttpErrorResponse) {
+                    if (this.config.debug) {
+                        console.debug('FAILED', error.status, error.url, error);
+                    }
+                }
+                else {
+                    if (this.config.debug) {
+                        console.debug('FAILED', error);
+                    }
                 }
 
                 if (empty) {

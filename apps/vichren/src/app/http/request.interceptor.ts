@@ -35,14 +35,18 @@ export class RequestInterceptor implements HttpInterceptor {
         }
 
         return next.handle(request)
-            .catch((error: HttpErrorResponse) => {
-                if (resource && resource.retry(error, base)) {
-                    return this.makeRequest(original, next, pathname, resource, retry += 1);
+            .catch((error: Error) => {
+                if (error instanceof HttpErrorResponse) {
+                    if (resource && resource.retry(error, base)) {
+                        return this.makeRequest(original, next, pathname, resource, retry += 1);
+                    }
+
+                    return Observable.throw(new HttpErrorResponse(Object.assign(error, {
+                        url: error.url || request.url
+                    })));
                 }
 
-                return Observable.throw(new HttpErrorResponse(Object.assign(error, {
-                    url: error.url || request.url
-                })));
+                return Observable.throw(error);
             });
     }
 }

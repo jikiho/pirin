@@ -38,12 +38,6 @@ import {TimeoutInterceptor} from './timeout.interceptor';
         },
         {
             provide: HTTP_INTERCEPTORS,
-            useClass: TimeoutInterceptor,
-            multi: true,
-            deps: [ConfigService]
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
             useClass: CacheInterceptor,
             multi: true,
             deps: [ConfigService]
@@ -51,6 +45,12 @@ import {TimeoutInterceptor} from './timeout.interceptor';
         {
             provide: HTTP_INTERCEPTORS,
             useClass: RequestInterceptor,
+            multi: true,
+            deps: [ConfigService]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: TimeoutInterceptor,
             multi: true,
             deps: [ConfigService]
         }
