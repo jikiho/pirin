@@ -31,8 +31,13 @@ export class BudgetFormsDataService {
     }
 
     list(items: BudgetFormModel[]) {
+        const browser = this.browser$.getValue(),
+            id = browser.current ? browser.current.id : undefined,
+            index = items && id !== undefined ? items.findIndex(item => item.id === id) : undefined;
+
         this.items$.next(items);
-        this.update();
+
+        this.update(index);
     }
 
     loadDetail(id: string): Observable<BudgetFormModel> {
@@ -62,6 +67,7 @@ export class BudgetFormsDataService {
         }
 
         this.items$.next(items);
+
         this.update(index);
     }
 
