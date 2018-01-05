@@ -99,8 +99,8 @@ export class BudgetFormsDataService {
             current = items ? items[index] : undefined,
             previous = items ? items[index - 1] : undefined,
             next = items ? items[index + 1] : undefined,
-            first = items && index > 0 ? items[0] : undefined,
-            last = items && index < limit ? items[limit] : undefined;
+            first = items ? items[0] : undefined,
+            last = items ? items[limit] : undefined;
 
         this.browser$.next({count, limit, index, current, previous, next, first, last});
     }
