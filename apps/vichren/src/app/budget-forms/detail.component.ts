@@ -25,11 +25,11 @@ export class BudgetFormsDetailComponent {
     }
 
     ngOnInit() {
-//TODO: join params changes load detail after list
-//        this.route.queryParams.subscribe(params => this.loadList(params));
+        if (!this.data.items$.getValue()) {
+            this.loadList(this.route.snapshot.queryParams);
+        }
 
-        this.route.params.map(params => params.id).distinctUntilChanged()
-                .subscribe(id => this.loadDetail(id));
+        this.route.params.pluck('id').subscribe((id: string) => this.loadDetail(id));
     }
 
     private loadList(params: Params) {
@@ -37,7 +37,7 @@ export class BudgetFormsDetailComponent {
     }
 
     private loadDetail(id: string) {
-        this.data.detail(id);
+        this.data.updateDetail(id);
         this.data.loadDetail(id);
     }
 }

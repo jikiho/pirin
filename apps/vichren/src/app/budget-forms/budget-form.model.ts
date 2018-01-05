@@ -45,6 +45,8 @@ export class BudgetFormModel {
     values: ValueModel[];
     metadata: MetadataModel;
 
+    detailed: boolean;
+
     clone(...args) {
         return Object.assign.apply(this, [new BudgetFormModel(), this, ...args])
     }
@@ -96,7 +98,7 @@ export class BudgetFormModel {
         }
 
         return Object.assign(new BudgetFormModel(), {
-            number: index + 1,
+            number: index + 1 || 1, //-1/0 -> 1
             id: item[BudgetFormModel.ID],
             name: item[BudgetFormModel.NAME],
             type: values[BudgetFormModel.TYPE],
@@ -121,7 +123,8 @@ export class BudgetFormModel {
                     user: child.metadata[MetadataModel.USER],
                     timestamp: child.metadata[MetadataModel.TIMESTAMP]
                 })
-            }))
+            })),
+            detailed: index > -1 ? false : true
         });
     }
 }

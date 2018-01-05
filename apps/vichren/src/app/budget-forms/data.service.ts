@@ -19,20 +19,22 @@ export class BudgetFormsDataService {
     }
 
     loadList(params?: any): Observable<BudgetFormModel[]> {
-        const request = this.http.get('api:facts/byKind/budget_form')
+        const request = this.http.get('api:facts/byKind/budget_form').delay(1000)
             //.do(response => paging or range, message...
             .map(response => response['values'])
             .map(items => items.map((item, index: number) => BudgetFormModel.convert(item, index)));
 
-        request.subscribe(items => this.list(items));
+        request.subscribe(items => this.updateList(items));
 
         return request;
     }
 
-    list(items: BudgetFormModel[]) {
+    updateList(items: BudgetFormModel[]) {
         const browser = this.browser$.getValue(),
             id = browser.current ? browser.current.id : undefined,
             index = items && id !== undefined ? items.findIndex(item => item.id === id) : undefined;
+
+        this.detailed(items);
 
         this.items$.next(items);
 
@@ -43,12 +45,12 @@ export class BudgetFormsDataService {
         const request = this.http.get(`api:facts/byId/${id}`)
             .map(item => BudgetFormModel.convert(item));
 
-        request.subscribe(item => this.detail(item.id, item));
+        request.subscribe(item => this.updateDetail(item.id, item));
 
         return request;
     }
 
-    detail(id: string, item?: BudgetFormModel) {
+    updateDetail(id: string, item?: BudgetFormModel) {
         let items = this.items$.getValue(),
             index = items ? items.findIndex(item => item.id === id) : -1;
 
@@ -68,6 +70,24 @@ export class BudgetFormsDataService {
         this.items$.next(items);
 
         this.update(index);
+    }
+
+    /**
+     * Replaces a corresponding list items with current detail items.
+     * The list item number is kept.
+     */
+    private detailed(items: BudgetFormModel[]) {
+        const currents = this.items$.getValue() || [];
+
+        currents.forEach(current => {
+            const detailed = current.detailed,
+                index = detailed && items ? items.findIndex(item => item.id === current.id) : -1;
+
+            if (index > -1 && !items[index].detailed) {
+                current.number = items[index].number;
+                items[index] = current;
+            }
+        });
     }
 
     private update(selected: number = -1) {
