@@ -11,7 +11,7 @@ import {BudgetFormModel} from './budget-form.model';
 export class BudgetFormsDataService {
     items$: BehaviorSubject<BudgetFormModel[]> = new BehaviorSubject(null);
 
-    browser$: BehaviorSubject<{}> = new BehaviorSubject({
+    browser$: BehaviorSubject<any> = new BehaviorSubject({
         index: -1
     });
 
@@ -76,7 +76,7 @@ export class BudgetFormsDataService {
             browser = this.browser$.getValue(),
             count = items ? items.length : 0,
             limit = count - 1,
-            index = items ? Math.min(Math.max(0, selected > -1 ? selected : browser['index']), limit) : -1,
+            index = items ? Math.min(Math.max(0, selected > -1 ? selected : browser.index), limit) : -1,
             current = items ? items[index] : undefined,
             previous = items ? items[index - 1] : undefined,
             next = items ? items[index + 1] : undefined,
