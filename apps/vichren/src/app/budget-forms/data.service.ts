@@ -19,7 +19,7 @@ export class BudgetFormsDataService {
     }
 
     loadList(params?: any): Observable<BudgetFormModel[]> {
-        const request = this.http.get('api:facts/byKind/budget_form').delay(1000)
+        const request = this.http.get('api:facts/byKind/budget_form')
             //.do(response => paging or range, message...
             .map(response => response['values'])
             .map(items => items.map((item, index: number) => BudgetFormModel.convert(item, index)));

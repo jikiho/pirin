@@ -5,7 +5,7 @@
             <li><a [routerLink]="[base, browser.previous && browser.previous.id]" [enabled]="browser.previous" i18n-title title="Show previous listed detail" i18n>Previous listed detail</a></li>
             <li><a [routerLink]="[base, browser.next && browser.next.id]" [enabled]="browser.next" i18n-title title="Show next listed detail" i18n>Next listed detail</a></li>
             <li><a [routerLink]="[base, browser.last && browser.last.id]" [enabled]="browser.last" i18n-title title="Show last listed detail" i18n>Last listed detail</a></li>
-            <li><a [routerLink]="[base, browser.current && browser.current.id]" [enabled]="browser.current && !detailed" i18n-title title="Show detail" i18n>Open detail {{(browser.index + 1) || ''}}</a></li>
+            <li><a [routerLink]="[base, browser.current && browser.current.id]" [enabled]="browser.current && !detailed" i18n-title title="Show detail" i18n>Open detail {{browser.current && browser.current.number}}</a></li>
             <li><a [routerLink]="[base]" [enabled]="detailed" i18n-title title="Show list" i18n>Close detail</a></li>
         </ul>
     </nav>
