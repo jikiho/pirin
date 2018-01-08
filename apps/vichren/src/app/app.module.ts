@@ -27,6 +27,7 @@ import {HomeComponent} from './home.component';
 import {HttpModule} from './http/http.module';
 import {NumericPipe} from './numeric.pipe';
 import {TimestampPipe} from './timestamp.pipe';
+import {UnavailablePipe} from './unavailable.pipe';
 
 @NgModule({
     imports: [
@@ -52,7 +53,8 @@ import {TimestampPipe} from './timestamp.pipe';
         FactsListComponent,
         HomeComponent,
         NumericPipe,
-        TimestampPipe
+        TimestampPipe,
+        UnavailablePipe
     ],
     providers: [
         AppService,

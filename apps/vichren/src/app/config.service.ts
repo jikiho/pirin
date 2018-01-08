@@ -123,7 +123,10 @@ export class ConfigService {
      * Flag to debug the application.
      */
     get debug(): boolean {
-        return !this.production || this.hasQueryParam('debug');
+        const debug = !this.production || this.hasQueryParam('debug'),
+            disabled = this.hasQueryParam('debug', 'false');
+
+        return debug && !disabled;
     }
 
     /**

@@ -45,7 +45,6 @@ export class AppRouteReuseStrategy implements RouteReuseStrategy {
     retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle {
         const key = this.getKey(route),
             handle = key ? this.handlers.get(key) : null;
-//TODO: refresh handle.componentRef.instance (component) route
 
         return handle;
     }
@@ -54,7 +53,8 @@ export class AppRouteReuseStrategy implements RouteReuseStrategy {
      * Reuse the route...
      */
     shouldReuseRoute(next: ActivatedRouteSnapshot, current: ActivatedRouteSnapshot): boolean {
-        const should = next.routeConfig === current.routeConfig;
+        const key = this.getKey(next),
+            should = key ? next.routeConfig === current.routeConfig : false;
 
         return should;
     }

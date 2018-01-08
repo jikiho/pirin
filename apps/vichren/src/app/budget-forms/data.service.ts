@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
 
-import {BudgetFormModel} from './budget-form.model';
+import {BudgetFormModel, convert} from './budget-form.model';
 
 @Injectable()
 export class BudgetFormsDataService {
@@ -22,7 +22,7 @@ export class BudgetFormsDataService {
         const request = this.http.get('api:facts/byKind/budget_form')
             //.do(response => paging or range, message...
             .map(response => response['values'])
-            .map(items => items.map((item, index: number) => BudgetFormModel.convert(item, index)));
+            .map(items => items.map((item, index: number) => convert(item, index)));
 
         request.subscribe(items => this.updateList(items));
 
@@ -43,7 +43,7 @@ export class BudgetFormsDataService {
 
     loadDetail(id: string): Observable<BudgetFormModel> {
         const request = this.http.get(`api:facts/byId/${id}`)
-            .map(item => BudgetFormModel.convert(item));
+            .map(item => convert(item));
 
         request.subscribe(item => this.updateDetail(item.id, item));
 
@@ -90,6 +90,9 @@ export class BudgetFormsDataService {
         });
     }
 
+    /**
+     * Updates corresponding properties (browser).
+     */
     private update(selected: number = -1) {
         const items = this.items$.getValue(),
             browser = this.browser$.getValue(),
