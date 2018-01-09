@@ -6,6 +6,7 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {BehaviorSubject} from 'rxjs/Rx';
 
 import {AppService} from '../app.service';
+import {BrowserModel} from '../browsing/browser.model';
 import {BudgetFormModel} from './budget-form.model';
 import {BudgetFormsDataService} from './data.service';
 
@@ -17,7 +18,7 @@ import {BudgetFormsDataService} from './data.service';
 export class BudgetFormsDetailComponent {
     base: string = '/budget-forms';
 
-    browser$: BehaviorSubject<any> = this.data.browser$;
+    browser$: BehaviorSubject<BrowserModel<BudgetFormModel>> = this.data.browser$;
 
     constructor(private route: ActivatedRoute,
             app: AppService, private data: BudgetFormsDataService) {

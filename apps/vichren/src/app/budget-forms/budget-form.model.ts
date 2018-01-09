@@ -1,7 +1,9 @@
 /**
  * Budget form model.
  */
-export class BudgetFormModel {
+import {Model} from '../model';
+
+export class BudgetFormModel extends Model {
     number: number;
     id: string;
     name: string;
@@ -13,10 +15,6 @@ export class BudgetFormModel {
 
     detailed: boolean;
 
-    clone(...args) {
-        return Object.assign.apply(this, [new BudgetFormModel(), this, ...args])
-    }
-
     // conversion names
     static readonly ID = 'id';
     static readonly NAME = 'name';
@@ -25,7 +23,7 @@ export class BudgetFormModel {
     static readonly ORGANIZATION = 'DORG';
 }
 
-class MetadataModel {
+class MetadataModel extends Model {
     user: string;
     timestamp: string;
     state?: string;
@@ -38,7 +36,7 @@ class MetadataModel {
     static readonly VERSION = 'DVER';
 }
 
-class ValueModel {
+class ValueModel extends Model {
     number: number;
     id: string;
     status: string;
@@ -99,20 +97,20 @@ export function convert(item: any, index: number = -1): BudgetFormModel {
         }
     }
 
-    return Object.assign(new BudgetFormModel(), {
+    return new BudgetFormModel({
         number: index + 1 || 1, //-1/0 -> 1
         id: item[BudgetFormModel.ID],
         name: item[BudgetFormModel.NAME],
         type: values[BudgetFormModel.TYPE],
         period: values[BudgetFormModel.PERIOD] && values[BudgetFormModel.PERIOD].replace(/-Y$/, ''),
         organization: values[BudgetFormModel.ORGANIZATION],
-        metadata: Object.assign(new MetadataModel(), {
+        metadata: new MetadataModel({
             user: metadata[MetadataModel.USER],
             timestamp: metadata[MetadataModel.TIMESTAMP],
             state: values[MetadataModel.STATE],
             version: metadata[MetadataModel.VERSION]
         }),
-        values: children.map((child, index) => Object.assign(new ValueModel(), {
+        values: children.map((child, index) => new ValueModel({
             number: index + 1,
             id: child.id,
             status: child.values[ValueModel.STATUS],

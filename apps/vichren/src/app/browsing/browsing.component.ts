@@ -1,3 +1,6 @@
+/**
+ * Common browsing component.
+ */
 import {Component, ChangeDetectionStrategy, Input} from '@angular/core';
 
 @Component({

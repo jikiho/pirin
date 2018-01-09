@@ -5,19 +5,44 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable, BehaviorSubject} from 'rxjs/Rx';
 
+import {BrowserModel} from '../browsing/browser.model';
 import {BudgetFormModel, convert} from './budget-form.model';
 
 @Injectable()
 export class BudgetFormsDataService {
+    /**
+     * List of budget forms (stream).
+     */
     items$: BehaviorSubject<BudgetFormModel[]> = new BehaviorSubject(null);
 
-    browser$: BehaviorSubject<any> = new BehaviorSubject({
+    /**
+     * List of budget forms.
+     */
+    get items(): BudgetFormModel[] {
+        return this.items$.getValue();
+    }
+
+    /**
+     * Browser statement (stream).
+     */
+    browser$: BehaviorSubject<BrowserModel<BudgetFormModel>> =
+            new BehaviorSubject(new BrowserModel({
         index: -1
-    });
+    }));
+
+    /**
+     * Browser statement.
+     */
+    get browser(): BrowserModel<BudgetFormModel> {
+        return this.browser$.getValue();
+    }
 
     constructor(private http: HttpClient) {
     }
 
+    /**
+     * Loads a list of budget forms.
+     */
     loadList(params?: any): Observable<BudgetFormModel[]> {
         const request = this.http.get('api:facts/byKind/budget_form')
             //.do(response => paging or range, message...
@@ -29,8 +54,11 @@ export class BudgetFormsDataService {
         return request;
     }
 
+    /**
+     * Updates the list and corresponding properties.
+     */
     updateList(items: BudgetFormModel[]) {
-        const browser = this.browser$.getValue(),
+        const browser = this.browser,
             id = browser.current ? browser.current.id : undefined,
             index = items && id !== undefined ? items.findIndex(item => item.id === id) : undefined;
 
@@ -41,6 +69,9 @@ export class BudgetFormsDataService {
         this.update(index);
     }
 
+    /**
+     * Loads a budget form detail.
+     */
     loadDetail(id: string): Observable<BudgetFormModel> {
         const request = this.http.get(`api:facts/byId/${id}`)
             .map(item => convert(item));
@@ -50,8 +81,11 @@ export class BudgetFormsDataService {
         return request;
     }
 
+    /**
+     * Updates the listed detail and corresponding properties.
+     */
     updateDetail(id: string, item?: BudgetFormModel) {
-        let items = this.items$.getValue(),
+        let items = this.items,
             index = items ? items.findIndex(item => item.id === id) : -1;
 
         if (!item) {
@@ -59,7 +93,7 @@ export class BudgetFormsDataService {
         }
         else if (index > -1) {
             item.number = items[index].number;
-            items[index] = items[index].clone(item);
+            items[index] = new BudgetFormModel(items[index], item);
         }
         else {
             index = 0;
@@ -77,7 +111,7 @@ export class BudgetFormsDataService {
      * The list item number is kept.
      */
     private detailed(items: BudgetFormModel[]) {
-        const currents = this.items$.getValue() || [];
+        const currents = this.items,
 
         currents.forEach(current => {
             const detailed = current.detailed,
@@ -91,11 +125,11 @@ export class BudgetFormsDataService {
     }
 
     /**
-     * Updates corresponding properties (browser).
+     * Updates corresponding properties (browser statement).
      */
     private update(selected: number = -1) {
-        const items = this.items$.getValue(),
-            browser = this.browser$.getValue(),
+        const items = this.items,
+            browser = this.browser,
             count = items ? items.length : 0,
             limit = count - 1,
             index = items ? Math.min(Math.max(0, selected > -1 ? selected : browser.index), limit) : -1,
@@ -105,6 +139,8 @@ export class BudgetFormsDataService {
             first = items && index > 0 ? items[0] : undefined,
             last = items && index < limit ? items[limit] : undefined;
 
-        this.browser$.next({count, limit, index, current, previous, next, first, last});
+        this.browser$.next(new BrowserModel({
+            count, limit, index, current, previous, next, first, last
+        }));
     }
 }
