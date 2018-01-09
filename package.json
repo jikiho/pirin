@@ -5,7 +5,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
-        "start-locale": "ng serve --aot --locale",
+        "start-locale": "ng serve --base-href / --aot --locale",
         "build": "ng build --aot",
         "test": "ng test",
         "lint": "ng lint",
