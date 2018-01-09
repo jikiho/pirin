@@ -111,7 +111,7 @@ export class BudgetFormsDataService {
      * The list item number is kept.
      */
     private detailed(items: BudgetFormModel[]) {
-        const currents = this.items,
+        const currents = this.items || [];
 
         currents.forEach(current => {
             const detailed = current.detailed,
